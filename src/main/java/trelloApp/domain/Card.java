@@ -1,6 +1,7 @@
 package trelloApp.domain;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Card {
     private String name;
     private String description;
