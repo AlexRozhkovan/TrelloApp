@@ -1,8 +1,8 @@
 package spd.trello.domain;
 
 import lombok.Data;
+import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.domain.parent_classes.Resource;
-import spd.trello.enumerations.WorkspaceVisibility;
 
 import java.util.List;
 

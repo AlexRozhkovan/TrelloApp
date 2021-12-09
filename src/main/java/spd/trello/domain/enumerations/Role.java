@@ -1,4 +1,4 @@
-package spd.trello.enumerations;
+package spd.trello.domain.enumerations;
 
 public enum Role {
     GUEST,
