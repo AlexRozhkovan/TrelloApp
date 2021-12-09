@@ -1,26 +1,21 @@
-package trelloApp.domain;
+package spd.trello.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import spd.trello.domain.parent_classes.Resource;
 
-
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class Card {
+@Data
+public class Card extends Resource {
+
     private String name;
     private String description;
-    private boolean isArchived;
+    private Boolean archived;
     private List<Member> assignedMembers;
     private List<Label> labels;
     private List<Attachment> attachments;
     private List<Comment> comments;
     private List<CheckList> checkLists;
-    private LocalDateTime creationDate;
     private Reminder reminder;
 
 }
