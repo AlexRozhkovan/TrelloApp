@@ -1,4 +1,4 @@
-package spd.trello.domain.domainSuper;
+package spd.trello.domain.parent_classes;
 
 import lombok.Data;
 import spd.trello.domain.Member;
