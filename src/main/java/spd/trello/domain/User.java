@@ -1,12 +1,16 @@
 package spd.trello.domain;
 
 import lombok.Data;
-import spd.trello.domain.parent_classes.Domain;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import spd.trello.domain.parent_classes.Resource;
 
 import java.util.TimeZone;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class User extends Domain {
+@ToString(callSuper = true)
+public class User extends Resource {
 
     private String firstName;
     private String lastName;

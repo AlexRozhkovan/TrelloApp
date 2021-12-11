@@ -1,14 +1,18 @@
 package spd.trello.domain;
 
 import lombok.Data;
-import spd.trello.domain.parent_classes.Resource;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import spd.trello.domain.parent_classes.Domain;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class Reminder extends Resource {
+@ToString(callSuper = true)
+public class Reminder extends Domain {
 
     private LocalDateTime remindOn;
-    private Boolean active;
+    private Boolean active = Boolean.FALSE;
 
 }

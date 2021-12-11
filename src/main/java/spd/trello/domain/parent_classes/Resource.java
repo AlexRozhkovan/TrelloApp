@@ -1,15 +1,17 @@
 package spd.trello.domain.parent_classes;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import spd.trello.domain.Member;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Resource extends Domain {
+public abstract class Resource extends Domain {
 
-    private Member createdBy;
-    private Member updatedBy;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    Member createdBy;
+    Member updatedBy;
+    LocalDateTime createdDate = LocalDateTime.now();
+    LocalDateTime updatedDate = LocalDateTime.now();
 }
