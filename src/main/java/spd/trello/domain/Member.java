@@ -12,5 +12,5 @@ import spd.trello.domain.parent_classes.Resource;
 public class Member extends Resource {
 
     private User user;
-    private Role role;
+    private Role role = Role.GUEST;
 }

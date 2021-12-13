@@ -11,5 +11,5 @@ import spd.trello.domain.parent_classes.Domain;
 public class CheckableItem extends Domain {
 
     private String name;
-    private Boolean checked;
+    private Boolean checked = Boolean.FALSE;
 }

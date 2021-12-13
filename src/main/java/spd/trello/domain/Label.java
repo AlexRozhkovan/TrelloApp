@@ -12,5 +12,5 @@ import spd.trello.domain.parent_classes.Resource;
 public class Label extends Resource {
 
     private String name;
-    private Color color;
+    private Color color = Color.NULL;
 }
