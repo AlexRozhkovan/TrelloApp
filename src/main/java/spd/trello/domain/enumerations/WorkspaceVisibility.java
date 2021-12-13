@@ -1,4 +1,4 @@
-package trelloApp.enumerations;
+package spd.trello.domain.enumerations;
 
 public enum WorkspaceVisibility {
     PRIVATE,
