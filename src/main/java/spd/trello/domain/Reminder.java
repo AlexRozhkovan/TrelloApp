@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 public class Reminder extends Domain {
 
     private LocalDateTime remindOn;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Boolean active = Boolean.FALSE;
 
 }

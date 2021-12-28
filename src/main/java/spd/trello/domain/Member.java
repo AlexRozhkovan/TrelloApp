@@ -1,10 +1,10 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import spd.trello.domain.enumerations.Role;
 import spd.trello.domain.parent_classes.Resource;
+
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -13,4 +13,5 @@ public class Member extends Resource {
 
     private User user;
     private Role role = Role.GUEST;
+
 }

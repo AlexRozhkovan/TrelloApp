@@ -6,5 +6,9 @@ import java.util.UUID;
 
 @Data
 public abstract class Domain {
-    UUID id;
+
+    private UUID id;
+    public Domain() {
+        this.id = UUID.randomUUID();
+    }
 }
