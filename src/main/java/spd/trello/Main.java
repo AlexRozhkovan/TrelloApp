@@ -1,22 +1,30 @@
 package spd.trello;
 
-import spd.trello.domain.Board;
-import spd.trello.domain.Card;
-import spd.trello.service.BoardService;
-import spd.trello.service.CardService;
+import org.flywaydb.core.Flyway;
+import spd.trello.db.ConnectionForDB;
+import spd.trello.db.FlyWayConfig;
+import spd.trello.service.MenuService;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+
+import java.sql.SQLException;
+
 
 public class Main {
-    public static void main(String[] args) {
-        CardService cardService = new CardService();
-        Card card = cardService.create();
-        cardService.print(card);
-        cardService.update(0, card);
-        cardService.print(card);
+    public static void main(String[] args) throws SQLException, IOException {
+        ConnectionForDB.getConnection();
+        DataSource dataSource = ConnectionForDB.createDataSource();
+        Flyway flyway = FlyWayConfig.createFlyway(dataSource);
+        flyway.migrate();
 
-        BoardService boardService = new BoardService();
-        Board board = boardService.create();
-        boardService.print(board);
-        boardService.update(0, board);
-        boardService.print(board);
+        MenuService menuService = new MenuService(dataSource);
+        try {
+            menuService.processMenu();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 }
+
