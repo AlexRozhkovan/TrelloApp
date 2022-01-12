@@ -2,7 +2,6 @@ package spd.trello.repository.mapper;
 
 import spd.trello.domain.Board;
 import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

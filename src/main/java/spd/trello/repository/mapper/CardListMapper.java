@@ -10,10 +10,13 @@ import java.util.UUID;
 public class CardListMapper {
     public CardList extractFromResultSet(ResultSet resultSet) throws SQLException {
         CardList cardList = new CardList();
+        Card card = new Card();
+        UUID cardID = card.getId();
         cardList.setId(UUID.fromString(resultSet.getString("id")));
         cardList.setName(resultSet.getString("name"));
         cardList.setArchived(resultSet.getBoolean("archived"));
         cardList.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+        cardList.setCreatedBy(resultSet.getString("created_by"));
         return cardList;
     }
 }

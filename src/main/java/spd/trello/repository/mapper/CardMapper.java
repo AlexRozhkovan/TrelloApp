@@ -14,6 +14,7 @@ public class CardMapper {
         card.setDescription(resultSet.getString("description"));
         card.setArchived(resultSet.getBoolean("archived"));
         card.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+        card.setCreatedBy(resultSet.getString("created_by"));
         return card;
     }
 }
