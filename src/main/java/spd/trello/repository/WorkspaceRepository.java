@@ -14,7 +14,7 @@ import java.util.UUID;
 public class WorkspaceRepository implements IRepository<Workspace> {
 
     private final DataSource dataSource;
-    private final String saveSTMT = "insert into workspaces(id, updated_by, updated_date, name, description, visibility) values (?,?,?,?,?,?)";
+    private final String saveSTMT = "insert into workspaces(id, created_by, created_date, name, description, visibility) values (?,?,?,?,?,?)";
     private final String findByIDSTMT = "SELECT * FROM workspaces WHERE id=?";
     private final String findAllByIDSTMT = "SELECT * FROM workspaces";
     private final String updateSTMT = "UPDATE workspaces SET updated_by =?, updated_date =?, name =?, description =?, visibility =? WHERE id =?";
