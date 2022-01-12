@@ -17,6 +17,6 @@ public abstract class Resource extends Domain {
     private String createdBy; //email ??
     private String updatedBy; //email ??
     private LocalDateTime createdDate = LocalDateTime.now();
-    private LocalDateTime updatedDate = LocalDateTime.now();
+    private LocalDateTime updatedDate;
 
 }
