@@ -15,5 +15,5 @@ public class CardList extends Resource {
 
     private String name;
     private Boolean archived = Boolean.FALSE;
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 }

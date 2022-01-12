@@ -11,10 +11,9 @@ import java.util.TimeZone;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
-public class User extends Domain {
+public class User extends Resource {
 
     private String firstName;
     private String lastName;
     private String email;
-    private TimeZone timeZone;
 }

@@ -17,10 +17,9 @@ public class Board extends Resource {
 
     private String name;
     private String description;
-    // private boolean favouriteStatus; TODO where is need to be?
     private Boolean archived = Boolean.FALSE;
     private BoardVisibility visibility = BoardVisibility.PRIVATE;
-    private List<Member> members;
-    private List<CardList> cardLists;
+    private List<Member> members = new ArrayList<>();
+    private List<CardList> cardLists= new ArrayList<>();
 
 }

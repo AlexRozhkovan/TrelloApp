@@ -14,6 +14,6 @@ import java.util.UUID;
 public class CheckList extends Domain {
 
     private String name;
-    private List<CheckableItem> items;
+    private List<CheckableItem> items = new ArrayList<>();
 
 }

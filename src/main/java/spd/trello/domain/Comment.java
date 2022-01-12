@@ -12,10 +12,10 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
-public class Comment extends Domain {
+public class Comment extends Resource {
 
     private String text;
-    private List<Attachment> attachments;
+    private List<Attachment> attachments = new ArrayList<>();
     private Member member;
     private LocalDateTime dateTime;
 

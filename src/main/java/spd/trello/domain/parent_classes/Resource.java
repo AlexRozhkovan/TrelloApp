@@ -14,9 +14,9 @@ import java.util.UUID;
 @Data
 public abstract class Resource extends Domain {
 
-    private Member createdBy; //email ??
-    private Member updatedBy; //email ??
+    private String createdBy; //email ??
+    private String updatedBy; //email ??
     private LocalDateTime createdDate = LocalDateTime.now();
-    LocalDateTime updatedDate = LocalDateTime.now();
+    private LocalDateTime updatedDate = LocalDateTime.now();
 
 }

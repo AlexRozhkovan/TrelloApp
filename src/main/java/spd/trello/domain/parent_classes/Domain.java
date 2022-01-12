@@ -7,8 +7,5 @@ import java.util.UUID;
 @Data
 public abstract class Domain {
 
-    private UUID id;
-    public Domain() {
-        this.id = UUID.randomUUID();
-    }
+    protected UUID id = UUID.randomUUID();
 }
