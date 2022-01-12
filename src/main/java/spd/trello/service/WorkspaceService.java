@@ -1,37 +1,57 @@
 package spd.trello.service;
 
-import spd.trello.domain.Card;
 import spd.trello.domain.Workspace;
-import spd.trello.repository.CardRepository;
+import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.repository.WorkspaceRepository;
 
 import java.util.List;
-import java.util.Scanner;
+import java.util.UUID;
 
-public class WorkspaceService  extends AbstractService<Workspace> {
+public class WorkspaceService extends AbstractService<Workspace> {
     public WorkspaceService(WorkspaceRepository repository) {
         super(repository);
     }
 
-    @Override
-    public Workspace create(Scanner scanner) {
+    public Workspace create(String createdBy, String name, String description, WorkspaceVisibility visibility) {
         Workspace workspace = new Workspace();
-        System.out.println("Enter workspace name");
-        workspace.setName(scanner.nextLine());
-        System.out.println("Enter workspace description");
-        workspace.setDescription(scanner.nextLine());
+        workspace.setId(UUID.randomUUID());
+        workspace.setCreatedBy(createdBy);
+        workspace.setName(name);
+        workspace.setDescription(description);
+        workspace.setVisibility(visibility);
         repository.create(workspace);
         return workspace;
     }
 
-    @Override
+    public boolean deleteAll() {
+        repository.deleteAll();
+        return true;
+    }
+
+    public Workspace update(UUID id, String updatedBy, String name, String description, WorkspaceVisibility visibility) {
+        Workspace byID = repository.findByID(id);
+        byID.setUpdatedBy(updatedBy);
+        byID.setName(name);
+        byID.setDescription(description);
+        byID.setVisibility(visibility);
+        repository.update(byID);
+        return byID;
+    }
+
     public List<Workspace> findAll() {
         return repository.findAll();
     }
 
-    @Override
     public void print(Workspace entity) {
         System.out.println(entity);
     }
 
+    public Workspace findByID(UUID id) {
+        return repository.findByID(id);
+    }
+
+    public boolean deleteByID(UUID id) {
+        repository.deleteByID(id);
+        return true;
+    }
 }
