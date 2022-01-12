@@ -1,87 +1,163 @@
 package spd.trello.repository;
 
 import spd.trello.domain.Card;
+import spd.trello.domain.Member;
 import spd.trello.repository.mapper.CardMapper;
+import spd.trello.repository.mapper.MemberMapper;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CardRepository implements IRepository<Card>{
+public class CardRepository implements IRepository<Card> {
 
     private final DataSource dataSource;
-    private final String saveSTMT = "insert into cards(id, created_date, name, description, archived, cardList_id) values (?,?,?,?,?)";
+    private final String saveSTMT = "insert into cards(id, created_by, created_date, name, description, archived, cardlist_id) values (?,?,?,?,?,?,?)";
     private final String findByIDSTMT = "SELECT * FROM cards WHERE id=?";
     private final String findAllByIDSTMT = "SELECT * FROM cards";
+    private final String updateSTMT = "UPDATE cards SET updated_by=?,updated_date=?, name=?, description=?, archived=? WHERE id =?";
+    private final String deleteByIDSTMT = "DELETE FROM cards WHERE id=? ";
+    private final String deleteAllSTMT = "TRUNCATE TABLE cards, cards_members";
 
-    public CardRepository(DataSource dataSource){
+    public CardRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public Card findByID(UUID id){
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(findByIDSTMT)){
-            statement.setObject(1, id);
-            ResultSet resultSet = statement.executeQuery();
+    public Card findByID(UUID id) {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(findByIDSTMT)) {
+            stmt.setObject(1, id);
+            ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 CardMapper cardMapper = new CardMapper();
                 return cardMapper.extractFromResultSet(resultSet);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new IllegalStateException("CardRepository::findByID failed");
         }
         throw new IllegalStateException("Card with ID: " + id.toString() + "doesn't exist");
     }
 
+    @Override
     public List<Card> findAll() {
         List<Card> result = new ArrayList<>();
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(findAllByIDSTMT)){
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(findAllByIDSTMT)) {
             ResultSet resultSet;
-            resultSet = statement.executeQuery();
+            resultSet = stmt.executeQuery();
             CardMapper cardMapper = new CardMapper();
             while (resultSet.next()) {
                 result.add(cardMapper.extractFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("CardRepository::findALL failed");
         }
         return result;
     }
 
-
     @Override
-    public void create(Card entity) {
+    public Card create(Card entity) {
 
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement(saveSTMT)) {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(saveSTMT)) {
             stmt.setObject(1, entity.getId());
-            stmt.setTimestamp(2, Timestamp.valueOf(entity.getCreatedDate()));
-            stmt.setString(3, entity.getName());
-            stmt.setString(4, entity.getDescription());
-            stmt.setBoolean(5, entity.getArchived());
-            //stmt.setObject(6, UUID.fromString("77051dfc-9947-4ad3-9336-da72f54abaea")); //TODO
-
+            stmt.setString(2, entity.getCreatedBy());
+            stmt.setTimestamp(3, Timestamp.valueOf(entity.getCreatedDate()));
+            stmt.setString(4, entity.getName());
+            stmt.setString(5, entity.getDescription());
+            stmt.setBoolean(6, entity.getArchived());
+            stmt.setObject(7, UUID.randomUUID());//TODO
+            addMemberRelations(entity);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("Card creation failed", e);
         }
-    }
-
- /* @Override
-    public Card update(Card entity) {
-        throw new NotImplementedException("DemoUserRepository::update not implemented");
+        return entity;
     }
 
     @Override
-    public boolean delete(UUID id) {
-        throw new NotImplementedException("DemoUserRepository::delete not implemented");
+    public Card update(Card entity) {
+        Card updatedCard = null;
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(updateSTMT)) {
+            stmt.setString(1, entity.getCreatedBy());
+            stmt.setTimestamp(2, Timestamp.valueOf(entity.getUpdatedDate()));
+            stmt.setString(3, entity.getName());
+            stmt.setString(4, entity.getDescription());
+            stmt.setBoolean(5, entity.getArchived());
+            stmt.setObject(6, entity.getId());
+            if (!entity.getAssignedMembers().isEmpty())
+                addMemberRelations(entity);
+            stmt.executeUpdate();
+            updatedCard = findByID(entity.getId());
+        } catch (SQLException e) {
+            throw new IllegalStateException("Card updating failed", e);
+        }
+        return updatedCard;
     }
-*/
 
+    private void addMemberRelations(Card card) throws SQLException {
 
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("INSERT INTO cards_members(card_id, member_id) VALUES (?,?)")) {
 
+            for (Member member : card.getAssignedMembers()) {
+                stmt.setObject(1, card.getId());
+                stmt.setObject(2, member.getId());
+                stmt.executeUpdate();
+            }
+        }
+    }
+
+    private List<Member> getCardMembers(UUID cardId) throws SQLException {
+        List<Member> members = new ArrayList<>();
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("select m.id as id, m.created_by as created_by, m.updated_by as updated_by, m.created_date as created_date, m.role as role, m.user_id as user_id " +
+                "from cards c join cards_members cm on c.id = cm.card_id join members m on m.id=cm.member_id where c.id = ?")) {
+            stmt.setObject(1, cardId);
+
+            if (stmt.execute()) {
+                ResultSet resultSet = stmt.getResultSet();
+                MemberMapper memberMapper = new MemberMapper();
+                while (resultSet.next())
+                    members.add(memberMapper.extractFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("CardRepository::getCardMembers failed");
+
+        }
+        return members;
+    }
+
+    @Override
+    public boolean deleteByID(UUID id) {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteByIDSTMT)) {
+            deleteRelations(id);
+            stmt.setObject(1, id);
+            stmt.executeQuery();
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("CardRepository::deleteByID failed");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteAll() {
+
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteAllSTMT)) {
+            stmt.executeQuery();
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("CardRepository::deleteAll failed");
+        }
+        return true;
+    }
+
+    private void deleteRelations(UUID id) throws SQLException {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM cards_members WHERE card_id = ?")) {
+            stmt.setObject(1, id);
+            stmt.executeUpdate();
+        }
+    }
 }

@@ -3,10 +3,21 @@ package spd.trello.repository;
 import java.util.List;
 import java.util.UUID;
 
-public interface IRepository <T>{
+public interface IRepository<T> {
     T findByID(UUID id);
-    void create(T entity);
-    //T update(T entity);
-    //boolean delete(UUID id);
-    public List<T> findAll();
+
+    T create(T entity);
+
+    List<T> findAll();
+
+    T update(T entity);
+
+    default boolean deleteAll() {
+        return false;
+    }
+
+    default boolean deleteByID(UUID id) {
+        return false;
+    }
 }
+
