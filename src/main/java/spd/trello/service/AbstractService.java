@@ -1,5 +1,6 @@
 package spd.trello.service;
 
+import spd.trello.domain.Workspace;
 import spd.trello.repository.IRepository;
 
 public abstract class AbstractService<T> {

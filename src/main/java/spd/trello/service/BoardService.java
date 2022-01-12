@@ -26,12 +26,8 @@ public class BoardService extends AbstractService<Board> {
         return true;
     }
 
-    public Board update(UUID id, String name, String description, Boolean archived, BoardVisibility visibility) {
+    public Board update(UUID id) {
         Board byID = repository.findByID(id);
-        byID.setName(name);
-        byID.setDescription(description);
-        byID.setArchived(archived);
-        byID.setVisibility(visibility);
         repository.update(byID);
         return byID;
     }

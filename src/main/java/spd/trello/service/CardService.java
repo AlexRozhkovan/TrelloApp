@@ -25,11 +25,8 @@ public class CardService extends AbstractService<Card> {
         return true;
     }
 
-    public Card update(UUID id, String name, String description, Boolean archived) {
+    public Card update(UUID id) {
         Card byID = repository.findByID(id);
-        byID.setName(name);
-        byID.setDescription(description);
-        byID.setArchived(archived);
         repository.update(byID);
         return byID;
     }

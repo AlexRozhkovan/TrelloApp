@@ -26,11 +26,8 @@ public class UserService extends AbstractService<User> {
         return true;
     }
 
-    public User update(UUID id, String firstName, String lastName, String email) {
+    public User update(UUID id) {
         User byID = repository.findByID(id);
-        byID.setFirstName(firstName);
-        byID.setLastName(lastName);
-        byID.setEmail(email);
         repository.update(byID);
         return byID;
     }

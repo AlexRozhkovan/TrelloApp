@@ -4,6 +4,7 @@ import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.repository.WorkspaceRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,12 +29,8 @@ public class WorkspaceService extends AbstractService<Workspace> {
         return true;
     }
 
-    public Workspace update(UUID id, String updatedBy, String name, String description, WorkspaceVisibility visibility) {
+    public Workspace update(UUID id) {
         Workspace byID = repository.findByID(id);
-        byID.setUpdatedBy(updatedBy);
-        byID.setName(name);
-        byID.setDescription(description);
-        byID.setVisibility(visibility);
         repository.update(byID);
         return byID;
     }

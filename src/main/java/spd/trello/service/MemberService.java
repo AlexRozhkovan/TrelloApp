@@ -26,9 +26,8 @@ public class MemberService extends AbstractService<Member> {
         return true;
     }
 
-    public Member update(UUID id, Role role) {
+    public Member update(UUID id) {
         Member byID = repository.findByID(id);
-        byID.setRole(role);
         repository.update(byID);
         return byID;
     }
