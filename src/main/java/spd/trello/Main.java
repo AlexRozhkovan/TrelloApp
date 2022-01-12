@@ -3,7 +3,6 @@ package spd.trello;
 import org.flywaydb.core.Flyway;
 import spd.trello.db.ConnectionForDB;
 import spd.trello.db.FlyWayConfig;
-import spd.trello.service.MenuService;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -18,12 +17,6 @@ public class Main {
         Flyway flyway = FlyWayConfig.createFlyway(dataSource);
         flyway.migrate();
 
-        MenuService menuService = new MenuService(dataSource);
-        try {
-            menuService.processMenu();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }
