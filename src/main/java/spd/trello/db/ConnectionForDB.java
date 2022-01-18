@@ -11,25 +11,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionForDB {
-
-    public static Connection getConnection() throws SQLException, IOException {
+    public static Connection getConnection() throws IOException {
         DataSource dataSource = createDataSource();
         Connection connection = null;
-        try
-        {
+        try {
             connection = dataSource.getConnection();
-            if (connection != null)
-            {
-                System.out.println("Connected to the PostgreSQL server successfully.");
-            } else
-            {
-                System.out.println("Failed to make connection!");
-            }
-        } catch (SQLException e)
-        {
+
+        } catch (SQLException e) {
             getSQLExceptionInfo(e);
         }
-
         return connection;
     }
 
@@ -39,7 +29,6 @@ public class ConnectionForDB {
         System.out.println("SQLException SQL state:" + e.getSQLState());
         System.out.println("SQLException SQL error code:" + e.getErrorCode());
     }
-
 
     private static Properties loadProperties() throws IOException{
         InputStream in = ConnectionForDB.class.getClassLoader()

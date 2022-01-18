@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IRepository<T> {
-    T findByID(UUID id);
+    T findById(UUID id);
 
     T create(T entity);
 

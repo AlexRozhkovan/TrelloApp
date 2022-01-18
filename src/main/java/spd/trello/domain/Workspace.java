@@ -8,6 +8,7 @@ import spd.trello.domain.parent_classes.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -16,7 +17,6 @@ public class Workspace extends Resource {
 
     private String name;
     private String description;
-    private List<Board> boards = new ArrayList<>();
-    private List<Member> members = new ArrayList<>();
     private WorkspaceVisibility visibility = WorkspaceVisibility.PUBLIC;
+    private List<Member> members = new ArrayList<>();
 }

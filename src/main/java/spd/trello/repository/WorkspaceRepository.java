@@ -19,14 +19,14 @@ public class WorkspaceRepository implements IRepository<Workspace> {
     private final String findAllByIDSTMT = "SELECT * FROM workspaces";
     private final String updateSTMT = "UPDATE workspaces SET updated_by =?, updated_date =?, name =?, description =?, visibility =? WHERE id =?";
     private final String deleteByIDSTMT = "DELETE FROM workspaces WHERE id=?";
-    private final String deleteAllSTMT = "TRUNCATE TABLE workspaces, workspaces_members";
+    private final String deleteAllSTMT = "DELETE FROM workspaces";
 
     public WorkspaceRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public Workspace findByID(UUID id) {
+    public Workspace findById(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(findByIDSTMT)) {
             statement.setObject(1, id);
@@ -58,10 +58,8 @@ public class WorkspaceRepository implements IRepository<Workspace> {
         return result;
     }
 
-
     @Override
     public Workspace create(Workspace entity) {
-
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(saveSTMT)) {
             stmt.setObject(1, entity.getId());
             stmt.setString(2, entity.getCreatedBy());
@@ -71,36 +69,32 @@ public class WorkspaceRepository implements IRepository<Workspace> {
             stmt.setString(6, entity.getVisibility().toString());
             addMemberRelations(entity);
             stmt.executeUpdate();
+            return findById(entity.getId());
         } catch (SQLException e) {
             throw new IllegalStateException("Workspace creation failed", e);
         }
-        return entity;
     }
-
 
     @Override
     public Workspace update(Workspace entity) {
-        Workspace updatedWorkspace = null;
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(updateSTMT)) {
-            stmt.setTimestamp(1, Timestamp.valueOf(entity.getUpdatedDate()));
-            stmt.setString(2, entity.getName());
-            stmt.setString(3, entity.getDescription());
-            stmt.setObject(4, entity.getVisibility());
-            stmt.setObject(5, entity.getId());
+            stmt.setString(1, entity.getUpdatedBy());
+            stmt.setTimestamp(2, Timestamp.valueOf(entity.getUpdatedDate()));
+            stmt.setString(3, entity.getName());
+            stmt.setString(4, entity.getDescription());
+            stmt.setObject(5, entity.getVisibility().toString());
+            stmt.setObject(6, entity.getId());
             if (!entity.getMembers().isEmpty())
                 addMemberRelations(entity);
             stmt.executeUpdate();
-            updatedWorkspace = findByID(entity.getId());
+            return findById(entity.getId());
         } catch (SQLException e) {
             throw new IllegalStateException("Workspace updating failed", e);
         }
-        return updatedWorkspace;
     }
 
     private void addMemberRelations(Workspace workspace) throws SQLException {
-
-        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("INSERT INTO workspaces_members(workspace_id, member_id) VALUES (?,?)")) {
-
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("INSERT INTO workspaces_members(workspace_id, member_id) VALUES (?,?) ON CONFLICT DO NOTHING ")) {
             for (Member member : workspace.getMembers()) {
                 stmt.setObject(1, workspace.getId());
                 stmt.setObject(2, member.getId());
@@ -114,7 +108,6 @@ public class WorkspaceRepository implements IRepository<Workspace> {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("select m.id as id, m.created_by as created_by, m.updated_by as updated_by, m.created_date as created_date, m.role as role, m.user_id as user_id " +
                 "from workspaces w join workspaces_members wm on w.id = wm.workspace_id join members m on m.id=wm.member_id where w.id = ?")) {
             stmt.setObject(1, workspaceId);
-
             if (stmt.execute()) {
                 ResultSet resultSet = stmt.getResultSet();
                 MemberMapper memberMapper = new MemberMapper();
@@ -123,7 +116,6 @@ public class WorkspaceRepository implements IRepository<Workspace> {
             }
         } catch (SQLException e) {
             throw new IllegalStateException("WorkspaceRepository::getCardMembers failed");
-
         }
         return members;
     }
@@ -131,12 +123,11 @@ public class WorkspaceRepository implements IRepository<Workspace> {
     @Override
     public boolean deleteByID(UUID id) {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteByIDSTMT)) {
-            deleteRelations(id);
+            deleteRelation(id);
             stmt.setObject(1, id);
-            stmt.executeQuery();
-
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalStateException("WorkspaceRepository::deleteByID failed");
+            throw new IllegalStateException("WorkspaceRepository::deleteByID failed", e);
         }
         return true;
     }
@@ -144,19 +135,24 @@ public class WorkspaceRepository implements IRepository<Workspace> {
     @Override
     public boolean deleteAll() {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteAllSTMT)) {
-            stmt.executeQuery();
-
+            deleteRelations();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("WorkspaceRepository::deleteAll failed");
         }
         return true;
     }
 
-    private void deleteRelations(UUID id) throws SQLException {
+    private void deleteRelation(UUID id) throws SQLException {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM workspaces_members WHERE workspace_id = ?")) {
             stmt.setObject(1, id);
             stmt.executeUpdate();
         }
     }
 
+    private void deleteRelations() throws SQLException {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM workspaces_members")) {
+            stmt.executeUpdate();
+        }
+    }
 }

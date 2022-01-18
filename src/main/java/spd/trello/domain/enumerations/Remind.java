@@ -11,6 +11,4 @@ public enum Remind {
     THREE_HOUR,
     DAY,
     TWO_DAYS*/
-
-
     }

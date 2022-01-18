@@ -11,7 +11,7 @@ import java.util.UUID;
 @ToString(callSuper = true)
 public class Member extends Resource {
 
-    private User user;
+    private UUID user;
     private Role role = Role.GUEST;
 
 }

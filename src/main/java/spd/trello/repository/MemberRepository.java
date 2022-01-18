@@ -18,20 +18,16 @@ public class MemberRepository implements IRepository<Member> {
     private final String saveSTMT = "insert into members(id, created_by, created_date, role, user_id) values (?,?,?,?,?)";
     private final String findByIDSTMT = "SELECT * FROM members WHERE id=?";
     private final String findAllByIDSTMT = "SELECT * FROM members";
-    private final String updateSTMT = "UPDATE members SET updated_by=?, updated_date=?, role=?, user_id=? WHERE id =?";
+    private final String updateSTMT = "UPDATE members SET updated_by=?, updated_date=?, role=? WHERE id =?";
     private final String deleteByIDSTMT = "DELETE FROM members WHERE id=? ";
-    private final String deleteAllSTMT = "TRUNCATE TABLE members, workspaces_members, cards_members";
+    private final String deleteAllSTMT = "DELETE FROM members";
 
     public MemberRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public MemberRepository() {
-
-    }
-
     @Override
-    public Member findByID(UUID id) {
+    public Member findById(UUID id) {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(findByIDSTMT)) {
             stmt.setObject(1, id);
             ResultSet resultSet = stmt.executeQuery();
@@ -63,67 +59,68 @@ public class MemberRepository implements IRepository<Member> {
 
     @Override
     public Member create(Member entity) {
-
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(saveSTMT)) {
             stmt.setObject(1, entity.getId());
             stmt.setString(2, entity.getCreatedBy());
             stmt.setTimestamp(3, Timestamp.valueOf(entity.getCreatedDate()));
-            stmt.setString(4, String.valueOf(entity.getRole()));
-            stmt.setObject(5, entity.getUser().getId());
-
+            stmt.setObject(4, entity.getRole().toString());
+            stmt.setObject(5, entity.getUser());
             stmt.executeUpdate();
+            return findById(entity.getId());
         } catch (SQLException e) {
-            throw new IllegalStateException("User creation failed", e);
+            throw new IllegalStateException("Member creation failed", e);
         }
-        return entity;
     }
 
     @Override
     public Member update(Member entity) {
-        Member updatedMember = null;
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(updateSTMT)) {
             stmt.setString(1, entity.getUpdatedBy());
             stmt.setTimestamp(2, Timestamp.valueOf(entity.getUpdatedDate()));
-            stmt.setString(3, String.valueOf(entity.getRole()));
-            stmt.setObject(4, entity.getUser().getId());
-            stmt.setObject(5, entity.getId());
+            stmt.setObject(3, entity.getRole().toString());
+            stmt.setObject(4, entity.getId());
             stmt.executeUpdate();
-            updatedMember = findByID(entity.getId());
+            return findById(entity.getId());
         } catch (SQLException e) {
-            throw new IllegalStateException("User updating failed", e);
+            throw new IllegalStateException("Member updating failed", e);
         }
-        return updatedMember;
     }
 
     @Override
     public boolean deleteByID(UUID id) {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteByIDSTMT)) {
-            deleteRelations(id);
+            deleteRelation(id);
             stmt.setObject(1, id);
-            stmt.executeQuery();
-
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("MemberRepository::deleteByID failed");
         }
         return true;
     }
 
-    private void deleteRelations(UUID id) throws SQLException {
-        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM cards_members WHERE card_id = ?")) {
+    @Override
+    public boolean deleteAll() {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteAllSTMT)) {
+            deleteRelations();
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("MemberRepository::deleteAll failed");
+        }
+        return true;
+    }
+
+    private void deleteRelation(UUID id) throws SQLException {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM cards_members WHERE card_id = ?")
+        ) {
             stmt.setObject(1, id);
             stmt.executeUpdate();
         }
     }
 
-    @Override
-    public boolean deleteAll() {
-
-        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteAllSTMT)) {
-            stmt.executeQuery();
-
-        } catch (SQLException e) {
-            throw new IllegalStateException("MemberRepository::deleteAll failed");
+    private void deleteRelations() throws SQLException {
+        try (PreparedStatement stmt = dataSource.getConnection().prepareStatement("DELETE FROM cards_members")
+        ) {
+            stmt.executeUpdate();
         }
-        return true;
     }
 }

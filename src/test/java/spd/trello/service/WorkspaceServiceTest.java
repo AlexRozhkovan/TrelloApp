@@ -6,76 +6,71 @@ import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.repository.WorkspaceRepository;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 class WorkspaceServiceTest extends BaseTest {
 
-    private final WorkspaceService service;
-
-    WorkspaceServiceTest() {
-        service = new WorkspaceService(new WorkspaceRepository(dataSource));
-    }
+    private final WorkspaceService service = new WorkspaceService(new WorkspaceRepository(dataSource));
 
 
+    Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
+    Workspace workspace1 = service.create("user1", "TestName1", "TestDesc1", WorkspaceVisibility.PUBLIC);
     @Test
     void create() {
-        Workspace workspace = service.create("user", "Testname", "TestDesc", WorkspaceVisibility.PUBLIC);
+
         Assertions.assertNotNull(workspace);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", workspace.getCreatedBy()),
-                () -> Assertions.assertEquals("Testname", workspace.getName()),
+                () -> Assertions.assertEquals("TestName", workspace.getName()),
                 () -> Assertions.assertEquals("TestDesc", workspace.getDescription()),
                 () -> Assertions.assertEquals(WorkspaceVisibility.PUBLIC, workspace.getVisibility())
         );
     }
 
     @Test
-    void deleteAll() {
-    }
-
-    @Test
     void update() {
-        Workspace workspace = service.create("user", "Testname", "TestDesc", WorkspaceVisibility.PUBLIC);
-        workspace.setName("Updated");
-        workspace.setUpdatedDate(LocalDateTime.now());
-        service.update(workspace.getId(), workspace);
-        Workspace updated = service.findByID(workspace.getId());
-        Assertions.assertEquals(updated, updated.getName()
+        Workspace updatedWorkspace = service.update( workspace.getId(),"updateUser", "UpdateName", "UpdateDesc", WorkspaceVisibility.PRIVATE);
+        Assertions.assertAll(
+                () -> Assertions.assertEquals("UpdateName", updatedWorkspace.getName()),
+                () -> Assertions.assertEquals("UpdateDesc", updatedWorkspace.getDescription()),
+                () -> Assertions.assertEquals(WorkspaceVisibility.PRIVATE, updatedWorkspace.getVisibility())
         );
     }
 
     @Test
-    void findAll() {
-    }
-
-    @Test
-    void print() {
-        Workspace workspace = service.create("user", "Testname", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Assertions.assertEquals(workspace.toString(), workspace.toString());
-    }
-
-    @Test
     void findByID() {
-        Workspace workspace = service.create("user", "Testname", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Workspace workspace1 = service.findByID(workspace.getId());
+        service.findByID(workspace.getId());
         Assertions.assertAll(
-                () -> Assertions.assertEquals("user", workspace1.getCreatedBy()),
-                () -> Assertions.assertEquals("Testname", workspace1.getName()),
-                () -> Assertions.assertEquals("TestDesc", workspace1.getDescription()),
-                () -> Assertions.assertEquals(WorkspaceVisibility.PUBLIC, workspace1.getVisibility())
+                () -> Assertions.assertEquals("user", workspace.getCreatedBy()),
+                () -> Assertions.assertEquals("TestName", workspace.getName()),
+                () -> Assertions.assertEquals("TestDesc", workspace.getDescription()),
+                () -> Assertions.assertEquals(WorkspaceVisibility.PUBLIC, workspace.getVisibility())
+        );
+    }
+
+    @Test
+    void findAll(){
+       Assertions.assertAll(
+                () -> Assertions.assertTrue(service.findAll().contains(workspace)),
+                () -> Assertions.assertTrue(service.findAll().contains(workspace1))
         );
     }
 
     @Test
     void deleteByID() {
-        Workspace workspace = service.create("user", "Testname", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Workspace workspace1 = service.create("user", "Testname", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Boolean delete = service.deleteByID(workspace.getId());
+        Assertions.assertEquals(service.findByID(workspace.getId()), workspace);
+        service.deleteByID(workspace.getId());
 
         Assertions.assertAll(
-                () -> Assertions.assertEquals("user", workspace1.getCreatedBy()),
-                () -> Assertions.assertEquals(null, workspace.getId())
+                () -> Assertions.assertTrue(service.deleteByID(workspace.getId())),
+                () -> Assertions.assertThrows(IllegalStateException.class, ()->service.findByID(workspace.getId()))
+        );
+    }
+
+    @Test
+    void deleteAll() {
+        service.deleteAll();
+        Assertions.assertAll(
+                () -> Assertions.assertFalse(service.findAll().contains(workspace)),
+                () -> Assertions.assertFalse(service.findAll().contains(workspace1))
         );
     }
 }

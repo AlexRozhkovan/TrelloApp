@@ -14,5 +14,6 @@ public class Label extends Domain {
 
     private String name;
     private Color color = Color.BLACK;
+    private UUID cardId;
 
 }

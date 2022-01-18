@@ -11,9 +11,10 @@ public class WorkspaceMapper {
     public Workspace extractFromResultSet(ResultSet resultSet) throws SQLException {
         Workspace workspace = new Workspace();
         workspace.setId(UUID.fromString(resultSet.getString("id")));
+        workspace.setCreatedBy(resultSet.getString("created_by"));
         workspace.setName(resultSet.getString("name"));
         workspace.setDescription(resultSet.getString("description"));
-        workspace.setVisibility((WorkspaceVisibility) resultSet.getObject("visibility"));
+        workspace.setVisibility((WorkspaceVisibility.valueOf(resultSet.getString("visibility"))));
         return workspace;
     }
 }

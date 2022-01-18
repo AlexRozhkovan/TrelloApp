@@ -7,5 +7,5 @@ CREATE TABLE workspaces
     updated_date TIMESTAMP,
     name         VARCHAR(30)      NOT NULL,
     description  VARCHAR(100),
-    visibility   VARCHAR(10)      NOT NULL
+    visibility   VARCHAR(20)      NOT NULL
 );

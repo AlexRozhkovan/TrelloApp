@@ -1,10 +1,12 @@
 package spd.trello.service;
 
+import spd.trello.domain.Card;
 import spd.trello.domain.Member;
 import spd.trello.domain.User;
 import spd.trello.domain.enumerations.Role;
 import spd.trello.repository.MemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,39 +15,35 @@ public class MemberService extends AbstractService<Member> {
         super(repository);
     }
 
-    public Member create(User user) {
+    public Member create(String createdBy, UUID user) {
         Member member = new Member();
-        member.setId(UUID.randomUUID());
+        member.setCreatedBy(createdBy);
         member.setUser(user);
         repository.create(member);
         return member;
     }
 
-    public boolean deleteAll() {
-        repository.deleteAll();
-        return true;
-    }
-
-    public Member update(UUID id) {
-        Member byID = repository.findByID(id);
-        repository.update(byID);
-        return byID;
+    public Member update(UUID id, String updatedBy, Role role) {
+        Member byID = repository.findById(id);
+        byID.setUpdatedBy(updatedBy);
+        byID.setRole(role);
+        byID.setUpdatedDate(LocalDateTime.now());
+        return repository.update(byID);
     }
 
     public List<Member> findAll() {
         return repository.findAll();
     }
 
-    public void print(Member entity) {
-        System.out.println(entity);
+    public Member findByID(UUID id) {
+        return repository.findById(id);
     }
 
-    public Member findByID(UUID id) {
-        return repository.findByID(id);
+    public boolean deleteAll() {
+        return repository.deleteAll();
     }
 
     public boolean deleteByID(UUID id) {
-        repository.deleteByID(id);
-        return true;
+        return repository.deleteByID(id);
     }
 }

@@ -18,5 +18,6 @@ public class Comment extends Resource {
     private List<Attachment> attachments = new ArrayList<>();
     private Member member;
     private LocalDateTime dateTime;
+    private UUID cardId;
 
 }

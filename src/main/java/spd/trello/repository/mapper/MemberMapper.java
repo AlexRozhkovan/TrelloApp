@@ -1,6 +1,7 @@
 package spd.trello.repository.mapper;
 
 import spd.trello.domain.Member;
+import spd.trello.domain.User;
 import spd.trello.domain.enumerations.Role;
 import spd.trello.repository.UserRepository;
 
@@ -14,9 +15,10 @@ public class MemberMapper {
         Member member = new Member();
         member.setId(UUID.fromString(resultSet.getString("id")));
         member.setCreatedBy(resultSet.getString("created_by"));
+        member.setUpdatedBy(resultSet.getString("updated_by"));
         member.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
         member.setRole(Role.valueOf(resultSet.getString("role")));
-        member.setUser(new UserRepository().findByID(UUID.fromString(resultSet.getString("user_id"))));
+        member.setUser(UUID.fromString(resultSet.getString("user_id")));
         return member;
     }
 }

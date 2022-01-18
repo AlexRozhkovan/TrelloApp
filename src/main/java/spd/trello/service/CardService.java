@@ -1,8 +1,10 @@
 package spd.trello.service;
 
+import spd.trello.domain.Board;
 import spd.trello.domain.Card;
 import spd.trello.repository.CardRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,41 +13,40 @@ public class CardService extends AbstractService<Card> {
         super(repository);
     }
 
-    public Card create(String name, String description) {
+    public Card create(String createdBy, String name, String description, UUID cardListId) {
         Card card = new Card();
-        card.setId(UUID.randomUUID());
+        card.setCreatedBy(createdBy);
         card.setName(name);
         card.setDescription(description);
+        card.setCardListId(cardListId);
         repository.create(card);
         return card;
     }
 
-    public boolean deleteAll() {
-        repository.deleteAll();
-        return true;
-    }
-
-    public Card update(UUID id) {
-        Card byID = repository.findByID(id);
-        repository.update(byID);
-        return byID;
+    public Card update(UUID id, String updatedBy, String name, String description, Boolean archived) {
+        Card byID = repository.findById(id);
+        byID.setUpdatedBy(updatedBy);
+        byID.setName(name);
+        byID.setDescription(description);
+        byID.setArchived(archived);
+        byID.setUpdatedDate(LocalDateTime.now());
+        return repository.update(byID);
     }
 
     public List<Card> findAll() {
         return repository.findAll();
     }
 
-    public void print(Card entity) {
-        System.out.println(entity);
+    public Card findByID(UUID id) {
+        return repository.findById(id);
     }
 
-    public Card findByID(UUID id) {
-        return repository.findByID(id);
+    public boolean deleteAll() {
+        return repository.deleteAll();
     }
 
     public boolean deleteByID(UUID id) {
-        repository.deleteByID(id);
-        return true;
+        return repository.deleteByID(id);
     }
 }
 

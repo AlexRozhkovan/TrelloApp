@@ -14,5 +14,7 @@ public class Attachment extends Domain {
     private String name;
     private String type;
     private String link;
+    private UUID cardId;
+    private UUID commentId;
 
 }

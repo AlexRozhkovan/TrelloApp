@@ -7,6 +7,7 @@ import spd.trello.domain.parent_classes.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -15,5 +16,5 @@ public class CardList extends Resource {
 
     private String name;
     private Boolean archived = Boolean.FALSE;
-    private List<Card> cards = new ArrayList<>();
+    private UUID boardId;
 }

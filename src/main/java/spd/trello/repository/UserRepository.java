@@ -19,19 +19,15 @@ public class UserRepository implements IRepository<User> {
     private final String findByIDSTMT = "SELECT * FROM users WHERE id=?";
     private final String findAllByIDSTMT = "SELECT * FROM users";
     private final String updateSTMT = "UPDATE users SET updated_date=?, first_name=?, last_name=?, email=? WHERE id =?";
-    private final String deleteByIDSTMT = "DELETE FROM users WHERE id=? ";
-    private final String deleteAllSTMT = "TRUNCATE TABLE users";
+    private final String deleteByIDSTMT = "DELETE FROM users WHERE id=?";
+    private final String deleteAllSTMT = "DELETE FROM users";
 
     public UserRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public UserRepository() {
-
-    }
-
     @Override
-    public User findByID(UUID id) {
+    public User findById(UUID id) {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(findByIDSTMT)) {
             stmt.setObject(1, id);
             ResultSet resultSet = stmt.executeQuery();
@@ -63,7 +59,6 @@ public class UserRepository implements IRepository<User> {
 
     @Override
     public User create(User entity) {
-
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(saveSTMT)) {
             stmt.setObject(1, entity.getId());
             stmt.setTimestamp(2, Timestamp.valueOf(entity.getCreatedDate()));
@@ -71,15 +66,14 @@ public class UserRepository implements IRepository<User> {
             stmt.setString(4, entity.getLastName());
             stmt.setString(5, entity.getEmail());
             stmt.executeUpdate();
+            return findById(entity.getId());
         } catch (SQLException e) {
             throw new IllegalStateException("User creation failed", e);
         }
-        return entity;
     }
 
     @Override
     public User update(User entity) {
-        User updatedUser = null;
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(updateSTMT)) {
             stmt.setTimestamp(1, Timestamp.valueOf(entity.getUpdatedDate()));
             stmt.setString(2, entity.getFirstName());
@@ -87,33 +81,29 @@ public class UserRepository implements IRepository<User> {
             stmt.setString(4, entity.getEmail());
             stmt.setObject(5, entity.getId());
             stmt.executeUpdate();
-            updatedUser = findByID(entity.getId());
+            return findById(entity.getId());
         } catch (SQLException e) {
             throw new IllegalStateException("User updating failed", e);
         }
-        return updatedUser;
     }
 
     @Override
     public boolean deleteByID(UUID id) {
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteByIDSTMT)) {
             stmt.setObject(1, id);
-            stmt.executeQuery();
-
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalStateException("UserRepository::deleteByID failed");
+            throw new IllegalStateException("UserRepository::deleteByID failed", e);
         }
         return true;
     }
 
     @Override
     public boolean deleteAll() {
-
         try (PreparedStatement stmt = dataSource.getConnection().prepareStatement(deleteAllSTMT)) {
-            stmt.executeQuery();
-
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalStateException("UserRepository::deleteAll failed");
+            throw new IllegalStateException("UserRepository::deleteAll failed", e);
         }
         return true;
     }

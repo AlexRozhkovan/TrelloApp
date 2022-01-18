@@ -19,7 +19,7 @@ public class Board extends Resource {
     private String description;
     private Boolean archived = Boolean.FALSE;
     private BoardVisibility visibility = BoardVisibility.PRIVATE;
+    private UUID workspaceId;
     private List<Member> members = new ArrayList<>();
-    private List<CardList> cardLists= new ArrayList<>();
 
 }
