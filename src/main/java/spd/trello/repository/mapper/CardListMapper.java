@@ -16,7 +16,6 @@ public class CardListMapper {
         cardList.setName(resultSet.getString("name"));
         cardList.setArchived(resultSet.getBoolean("archived"));
         cardList.setBoardId(UUID.fromString(resultSet.getString("board_id")));
-
         return cardList;
     }
 }

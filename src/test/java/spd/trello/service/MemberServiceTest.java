@@ -12,18 +12,16 @@ import java.util.List;
 
 class MemberServiceTest extends BaseTest {
 
-    private final MemberService service;
+    private final MemberService service = new MemberService(new MemberRepository(dataSource));
     private final UserService userService = new UserService(new UserRepository(dataSource));
 
-    MemberServiceTest() {
-        service = new MemberService(new MemberRepository(dataSource));
-
-    }
+    User user = userService.create("Karl", "Milligan", "test@horoshego.net");
+    User user1 = userService.create("Karl", "Milligan", "test@horoshego.net");
+    Member member = service.create("user", user.getId());
+    Member member1 = service.create("user1", user1.getId());
 
     @Test
     void create() {
-        User user = userService.create("Karl", "Milligan", "test@horoshego.net");
-        Member member = service.create("user", user.getId());
         Assertions.assertNotNull(member);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", member.getCreatedBy()),
@@ -33,9 +31,7 @@ class MemberServiceTest extends BaseTest {
 
     @Test
     void update() {
-        User user = userService.create("Karl", "Milligan", "test@horoshego.net");
-        Member member = service.create("user", user.getId());
-        Member updatedMember = service.update( member.getId(),user.getEmail(), Role.MEMBER );
+        Member updatedMember = service.update(member.getId(), user.getEmail(), Role.MEMBER);
         Assertions.assertAll(
                 () -> Assertions.assertEquals(user.getEmail(), updatedMember.getUpdatedBy()),
                 () -> Assertions.assertEquals(Role.MEMBER, updatedMember.getRole())
@@ -44,10 +40,6 @@ class MemberServiceTest extends BaseTest {
 
     @Test
     void findAll() {
-        User user = userService.create("Karl", "Milligan", "test@horoshego.net");
-        User user1 = userService.create("Karl", "Milligan", "test@horoshego.net");
-        Member member = service.create("user", user.getId());
-        Member member1 = service.create("user1", user1.getId());
         List<Member> members = service.findAll();
         Assertions.assertAll(
                 () -> Assertions.assertTrue(members.contains(member)),
@@ -57,8 +49,6 @@ class MemberServiceTest extends BaseTest {
 
     @Test
     void findByID() {
-        User user = userService.create("Karl", "Milligan", "test@horoshego.net");
-        Member member = service.create("user", user.getId());
         service.findByID(member.getId());
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", member.getCreatedBy()),
@@ -68,21 +58,15 @@ class MemberServiceTest extends BaseTest {
 
     @Test
     void deleteByID() {
-        User user = userService.create("Karl", "Milligan", "test@horoshego.net");
-        Member member = service.create("user", user.getId());
         service.deleteByID(member.getId());
         Assertions.assertAll(
                 () -> Assertions.assertTrue(service.deleteByID(member.getId())),
-                () -> Assertions.assertThrows(IllegalStateException.class, ()->service.findByID(member.getId()))
+                () -> Assertions.assertThrows(IllegalStateException.class, () -> service.findByID(member.getId()))
         );
     }
 
     @Test
     void deleteAll() {
-        User user = userService.create("Karl", "Milligan", "test@horoshego.net");
-        User user1 = userService.create("Karl", "Milligan", "test@horoshego.net");
-        Member member = service.create("user", user.getId());
-        Member member1 = service.create("user1", user1.getId());
         service.deleteAll();
         Assertions.assertAll(
                 () -> Assertions.assertFalse(service.findAll().contains(member)),

@@ -13,6 +13,7 @@ class WorkspaceServiceTest extends BaseTest {
 
     Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
     Workspace workspace1 = service.create("user1", "TestName1", "TestDesc1", WorkspaceVisibility.PUBLIC);
+
     @Test
     void create() {
 
@@ -27,7 +28,7 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void update() {
-        Workspace updatedWorkspace = service.update( workspace.getId(),"updateUser", "UpdateName", "UpdateDesc", WorkspaceVisibility.PRIVATE);
+        Workspace updatedWorkspace = service.update(workspace.getId(), "updateUser", "UpdateName", "UpdateDesc", WorkspaceVisibility.PRIVATE);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("UpdateName", updatedWorkspace.getName()),
                 () -> Assertions.assertEquals("UpdateDesc", updatedWorkspace.getDescription()),
@@ -47,8 +48,8 @@ class WorkspaceServiceTest extends BaseTest {
     }
 
     @Test
-    void findAll(){
-       Assertions.assertAll(
+    void findAll() {
+        Assertions.assertAll(
                 () -> Assertions.assertTrue(service.findAll().contains(workspace)),
                 () -> Assertions.assertTrue(service.findAll().contains(workspace1))
         );
@@ -61,7 +62,7 @@ class WorkspaceServiceTest extends BaseTest {
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(service.deleteByID(workspace.getId())),
-                () -> Assertions.assertThrows(IllegalStateException.class, ()->service.findByID(workspace.getId()))
+                () -> Assertions.assertThrows(IllegalStateException.class, () -> service.findByID(workspace.getId()))
         );
     }
 
