@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version '7.1.0'
     id 'org.flywaydb.flyway' version '8.2.2'
+    id 'jacoco'
 }
 
 group 'org.example'
@@ -26,4 +27,5 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }

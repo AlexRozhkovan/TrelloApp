@@ -9,6 +9,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
+@Generated
 public class Member extends Resource {
 
     private UUID user;

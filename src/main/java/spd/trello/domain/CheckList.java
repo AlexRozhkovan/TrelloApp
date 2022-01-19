@@ -11,6 +11,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
+@Generated
 public class CheckList extends Domain {
 
     private String name;

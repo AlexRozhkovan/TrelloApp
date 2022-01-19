@@ -10,6 +10,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
+@Generated
 public class Label extends Domain {
 
     private String name;

@@ -2,6 +2,7 @@ package spd.trello.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Generated;
 import lombok.ToString;
 import spd.trello.domain.enumerations.BoardVisibility;
 import spd.trello.domain.parent_classes.Resource;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
+@Generated
 public class Board extends Resource {
 
     private String name;

@@ -1,9 +1,6 @@
 package spd.trello.domain.parent_classes;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import spd.trello.domain.Member;
 import spd.trello.domain.User;
 
@@ -12,6 +9,7 @@ import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Generated
 public abstract class Resource extends Domain {
 
     private String createdBy;
