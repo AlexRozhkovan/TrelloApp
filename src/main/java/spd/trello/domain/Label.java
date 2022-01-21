@@ -1,16 +1,20 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import spd.trello.domain.enumerations.Color;
+import spd.trello.domain.parent_classes.Domain;
 import spd.trello.domain.parent_classes.Resource;
+
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
-public class Label extends Resource {
+@Generated
+public class Label extends Domain {
 
     private String name;
-    private Color color = Color.NULL;
+    private Color color = Color.BLACK;
+    private UUID cardId;
+
 }

@@ -1,40 +1,53 @@
 package spd.trello.service;
 
 import spd.trello.domain.Board;
+import spd.trello.domain.enumerations.BoardVisibility;
+import spd.trello.repository.BoardRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.UUID;
 
 public class BoardService extends AbstractService<Board> {
-    static List<Board> storage = new ArrayList();
+    public BoardService(BoardRepository repository) {
+        super(repository);
+    }
 
-    @Override
-    public Board create() {
+    public Board create(String createdBy, String name, String description, BoardVisibility visibility, UUID workspaceId) {
         Board board = new Board();
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Input name: ");
-        String name = sc.nextLine();
+        board.setCreatedBy(createdBy);
         board.setName(name);
-        storage.add(board);
+        board.setDescription(description);
+        board.setVisibility(visibility);
+        board.setWorkspaceId(workspaceId);
+        repository.create(board);
         return board;
     }
 
-    @Override
-    public void print(Board board) {
-        System.out.println(board);
+    public Board update(UUID id, String updatedBy, String name, String description, Boolean archived, BoardVisibility visibility) {
+        Board byID = repository.findById(id);
+        byID.setUpdatedBy(updatedBy);
+        byID.setName(name);
+        byID.setDescription(description);
+        byID.setArchived(archived);
+        byID.setVisibility(visibility);
+        byID.setUpdatedDate(LocalDateTime.now());
+        return repository.update(byID);
     }
 
-    @Override
-    public void update(int index, Board board) {
-        Board board1 = storage.get(index);
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Input name: ");
-        String newName = sc.nextLine();
-        board1.setName(newName);
-        board1.setUpdatedDate(LocalDateTime.now());
+    public List<Board> findAll() {
+        return repository.findAll();
+    }
 
+    public Board findByID(UUID id) {
+        return repository.findById(id);
+    }
 
+    public boolean deleteAll() {
+        return repository.deleteAll();
+    }
+
+    public boolean deleteByID(UUID id) {
+        return  repository.deleteByID(id);
     }
 }

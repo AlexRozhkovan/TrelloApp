@@ -2,18 +2,21 @@ package spd.trello.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Generated;
 import lombok.ToString;
 import spd.trello.domain.parent_classes.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
+@Generated
 public class CardList extends Resource {
 
     private String name;
     private Boolean archived = Boolean.FALSE;
-    private List<Card> cards = new ArrayList<>();
+    private UUID boardId;
 }

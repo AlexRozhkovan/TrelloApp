@@ -1,7 +1,7 @@
 package spd.trello.domain.enumerations;
 
 public enum Color {
-    NULL,
+
     RED("#FF0000"),
     GREEN("#008000"),
     YELLOW("#FFFF00"),
@@ -10,10 +10,11 @@ public enum Color {
     VIOLET("#EE82EE"),
     ORANGE("#FFA500");
 
-    Color() {
+    public final String hash;
+
+    Color(String hash) {
+        this.hash = hash;
     }
 
-    Color(String hash){
-    }
 
 }

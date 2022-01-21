@@ -1,0 +1,2 @@
+[![pipeline status](https://gitlab.com/AlexRozhkovan/java/badges/jdbc/pipeline.svg)](https://gitlab.com/AlexRozhkovan/java/-/commits/jdbc)
+[![coverage report](https://gitlab.com/AlexRozhkovan/java/badges/jdbc/coverage.svg)](https://gitlab.com/AlexRozhkovan/java/-/commits/jdbc)

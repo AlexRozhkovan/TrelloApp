@@ -1,20 +1,21 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import spd.trello.domain.parent_classes.Domain;
 
 import java.io.File;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @ToString(callSuper = true)
+@Generated
 public class Attachment extends Domain {
 
     private String name;
-    private File file;
+    private String type;
     private String link;
-
+    private UUID cardId;
+    private UUID commentId;
 
 }

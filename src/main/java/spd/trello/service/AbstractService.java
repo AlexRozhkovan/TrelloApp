@@ -1,9 +1,15 @@
 package spd.trello.service;
 
+import spd.trello.domain.Workspace;
+import spd.trello.repository.IRepository;
+
 public abstract class AbstractService<T> {
-    public abstract T create();
 
-    public abstract void update(int index, T t);
 
-    public abstract void print(T t);
+    protected IRepository<T> repository;
+
+    public AbstractService(IRepository<T> repository) {
+        this.repository = repository;
+    }
+
 }

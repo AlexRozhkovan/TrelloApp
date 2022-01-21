@@ -1,39 +1,52 @@
 package spd.trello.service;
 
+import spd.trello.domain.Board;
 import spd.trello.domain.Card;
+import spd.trello.repository.CardRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.UUID;
 
 public class CardService extends AbstractService<Card> {
-    static List<Card> storage = new ArrayList();
+    public CardService(CardRepository repository) {
+        super(repository);
+    }
 
-    @Override
-    public Card create() {
+    public Card create(String createdBy, String name, String description, UUID cardListId) {
         Card card = new Card();
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Input name: ");
-        String name = sc.nextLine();
+        card.setCreatedBy(createdBy);
         card.setName(name);
-        storage.add(card);
+        card.setDescription(description);
+        card.setCardListId(cardListId);
+        repository.create(card);
         return card;
     }
 
-    @Override
-    public void print(Card card) {
-        System.out.println(card);
+    public Card update(UUID id, String updatedBy, String name, String description, Boolean archived) {
+        Card byID = repository.findById(id);
+        byID.setUpdatedBy(updatedBy);
+        byID.setName(name);
+        byID.setDescription(description);
+        byID.setArchived(archived);
+        byID.setUpdatedDate(LocalDateTime.now());
+        return repository.update(byID);
     }
 
-    @Override
-    public void update(int index, Card card) {
-        Card card1 = storage.get(index);
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Input name: ");
-        String newName = sc.nextLine();
-        card1.setName(newName);
-        card1.setUpdatedDate(LocalDateTime.now());
+    public List<Card> findAll() {
+        return repository.findAll();
     }
 
+    public Card findByID(UUID id) {
+        return repository.findById(id);
+    }
+
+    public boolean deleteAll() {
+        return repository.deleteAll();
+    }
+
+    public boolean deleteByID(UUID id) {
+        return repository.deleteByID(id);
+    }
 }
+
