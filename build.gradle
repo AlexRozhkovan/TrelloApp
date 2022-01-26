@@ -21,6 +21,15 @@ dependencies {
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.0'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.2.2'
     testImplementation 'com.h2database:h2:1.4.200'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.3'
+    testImplementation 'org.springframework.boot:spring-boot-test:2.6.3'
+    testImplementation 'org.springframework:spring-test:5.3.15'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+
+
+
 
 
 }

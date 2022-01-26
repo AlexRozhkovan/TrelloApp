@@ -1,8 +1,7 @@
 package spd.trello.service;
 
-import spd.trello.domain.Card;
+import org.springframework.stereotype.Service;
 import spd.trello.domain.Member;
-import spd.trello.domain.User;
 import spd.trello.domain.enumerations.Role;
 import spd.trello.repository.MemberRepository;
 
@@ -10,7 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class MemberService extends AbstractService<Member> {
+
     public MemberService(MemberRepository repository) {
         super(repository);
     }
@@ -19,8 +20,7 @@ public class MemberService extends AbstractService<Member> {
         Member member = new Member();
         member.setCreatedBy(createdBy);
         member.setUser(user);
-        repository.create(member);
-        return member;
+        return repository.create(member);
     }
 
     public Member update(UUID id, String updatedBy, Role role) {
@@ -28,7 +28,8 @@ public class MemberService extends AbstractService<Member> {
         byID.setUpdatedBy(updatedBy);
         byID.setRole(role);
         byID.setUpdatedDate(LocalDateTime.now());
-        return repository.update(byID);
+        repository.update(byID);
+        return byID;
     }
 
     public List<Member> findAll() {
@@ -37,10 +38,6 @@ public class MemberService extends AbstractService<Member> {
 
     public Member findByID(UUID id) {
         return repository.findById(id);
-    }
-
-    public boolean deleteAll() {
-        return repository.deleteAll();
     }
 
     public boolean deleteByID(UUID id) {

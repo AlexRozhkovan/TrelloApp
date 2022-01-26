@@ -2,21 +2,20 @@ package spd.trello.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.WorkspaceVisibility;
-import spd.trello.repository.WorkspaceRepository;
 
+@SpringBootTest
 class WorkspaceServiceTest extends BaseTest {
 
-    private final WorkspaceService service = new WorkspaceService(new WorkspaceRepository(dataSource));
-
-
-    Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
-    Workspace workspace1 = service.create("user1", "TestName1", "TestDesc1", WorkspaceVisibility.PUBLIC);
+    @Autowired
+    WorkspaceService service;
 
     @Test
     void create() {
-
+        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
         Assertions.assertNotNull(workspace);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", workspace.getCreatedBy()),
@@ -28,6 +27,7 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void update() {
+        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
         Workspace updatedWorkspace = service.update(workspace.getId(), "updateUser", "UpdateName", "UpdateDesc", WorkspaceVisibility.PRIVATE);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("UpdateName", updatedWorkspace.getName()),
@@ -38,6 +38,7 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void findByID() {
+        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
         service.findByID(workspace.getId());
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", workspace.getCreatedBy()),
@@ -49,6 +50,8 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void findAll() {
+        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
+        Workspace workspace1 = service.create("user1", "TestName1", "TestDesc1", WorkspaceVisibility.PUBLIC);
         Assertions.assertAll(
                 () -> Assertions.assertTrue(service.findAll().contains(workspace)),
                 () -> Assertions.assertTrue(service.findAll().contains(workspace1))
@@ -57,21 +60,8 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void deleteByID() {
-        Assertions.assertEquals(service.findByID(workspace.getId()), workspace);
-        service.deleteByID(workspace.getId());
+        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
+        Assertions.assertTrue(service.deleteByID(workspace.getId()));
 
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(service.deleteByID(workspace.getId())),
-                () -> Assertions.assertThrows(IllegalStateException.class, () -> service.findByID(workspace.getId()))
-        );
-    }
-
-    @Test
-    void deleteAll() {
-        service.deleteAll();
-        Assertions.assertAll(
-                () -> Assertions.assertFalse(service.findAll().contains(workspace)),
-                () -> Assertions.assertFalse(service.findAll().contains(workspace1))
-        );
     }
 }

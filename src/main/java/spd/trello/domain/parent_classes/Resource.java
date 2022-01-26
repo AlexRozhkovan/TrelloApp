@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 @Generated
 public abstract class Resource extends Domain {

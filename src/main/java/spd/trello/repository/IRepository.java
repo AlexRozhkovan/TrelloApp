@@ -10,14 +10,8 @@ public interface IRepository<T> {
 
     List<T> findAll();
 
-    T update(T entity);
+    void update(T entity);
 
-    default boolean deleteAll() {
-        return false;
-    }
-
-    default boolean deleteByID(UUID id) {
-        return false;
-    }
+    boolean deleteByID(UUID id);
 }
 

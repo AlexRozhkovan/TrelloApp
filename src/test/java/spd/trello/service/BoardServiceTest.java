@@ -2,25 +2,25 @@ package spd.trello.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import spd.trello.domain.Board;
 import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.BoardVisibility;
 import spd.trello.domain.enumerations.WorkspaceVisibility;
-import spd.trello.repository.BoardRepository;
-import spd.trello.repository.WorkspaceRepository;
 
-
+@SpringBootTest
 class BoardServiceTest extends BaseTest {
-    private final BoardService service = new BoardService(new BoardRepository(dataSource));
-    private final WorkspaceService workspaceService = new WorkspaceService(new WorkspaceRepository(dataSource));
-    ;
 
-    Workspace workspace = workspaceService.create("WSuser", "WSTestname", "WSTestDesc", WorkspaceVisibility.PUBLIC);
-    Board board = service.create("user", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
-    Board board1 = service.create("user1", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
+    @Autowired
+    WorkspaceService workspaceService;
+    @Autowired
+    BoardService service;
 
     @Test
     void create() {
+        Workspace workspace = workspaceService.create("WSuser", "WSTestname", "WSTestDesc", WorkspaceVisibility.PUBLIC);
+        Board board = service.create("user", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
         Assertions.assertNotNull(board);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", board.getCreatedBy()),
@@ -32,6 +32,8 @@ class BoardServiceTest extends BaseTest {
 
     @Test
     void update() {
+        Workspace workspace = workspaceService.create("WSuser", "WSTestname", "WSTestDesc", WorkspaceVisibility.PUBLIC);
+        Board board = service.create("user", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
         Board updatedBoard = service.update(board.getId(), "updateUser", "UpdateName", "UpdateDesc", Boolean.TRUE, BoardVisibility.PUBLIC);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("UpdateName", updatedBoard.getName()),
@@ -43,6 +45,9 @@ class BoardServiceTest extends BaseTest {
 
     @Test
     void findAll() {
+        Workspace workspace = workspaceService.create("WSuser", "WSTestname", "WSTestDesc", WorkspaceVisibility.PUBLIC);
+        Board board = service.create("user", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
+        Board board1 = service.create("user1", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
         Assertions.assertAll(
                 () -> Assertions.assertTrue(service.findAll().contains(board)),
                 () -> Assertions.assertTrue(service.findAll().contains(board1))
@@ -51,6 +56,8 @@ class BoardServiceTest extends BaseTest {
 
     @Test
     void findByID() {
+        Workspace workspace = workspaceService.create("WSuser", "WSTestname", "WSTestDesc", WorkspaceVisibility.PUBLIC);
+        Board board = service.create("user", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
         service.findByID(board.getId());
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", board.getCreatedBy()),
@@ -62,20 +69,10 @@ class BoardServiceTest extends BaseTest {
 
     @Test
     void deleteByID() {
-        Assertions.assertEquals(service.findByID(board.getId()), board);
-        service.deleteByID(board.getId());
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(service.deleteByID(board.getId())),
-                () -> Assertions.assertThrows(IllegalStateException.class, () -> service.findByID(board.getId()))
-        );
+        Workspace workspace = workspaceService.create("WSuser", "WSTestname", "WSTestDesc", WorkspaceVisibility.PUBLIC);
+        Board board = service.create("user", "TestName", "TestDesc", BoardVisibility.PRIVATE, workspace.getId());
+
+        Assertions.assertTrue(service.deleteByID(board.getId()));
     }
 
-    @Test
-    void deleteAll() {
-        service.deleteAll();
-        Assertions.assertAll(
-                () -> Assertions.assertFalse(service.findAll().contains(board)),
-                () -> Assertions.assertFalse(service.findAll().contains(board1))
-        );
-    }
 }

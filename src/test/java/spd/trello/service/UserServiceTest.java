@@ -2,22 +2,23 @@ package spd.trello.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import spd.trello.domain.User;
 import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.repository.UserRepository;
 import spd.trello.repository.WorkspaceRepository;
 
+@SpringBootTest
 public class UserServiceTest extends BaseTest{
 
-    private final UserService service = new UserService(new UserRepository(dataSource));
+    @Autowired
+   UserService service;
 
-
-    User user = service.create("Jonh", "Smith", "google@emaila.net");
-    User user1 = service.create("Sam", "Johnson", "google@emaila.net");
     @Test
     void create() {
-
+        User user = service.create("Jonh", "Smith", "google@emaila.net");
         Assertions.assertNotNull(user);
         Assertions.assertAll(
                 () -> Assertions.assertEquals("Jonh", user.getFirstName()),
@@ -28,6 +29,7 @@ public class UserServiceTest extends BaseTest{
 
     @Test
     void update() {
+        User user = service.create("Jonh", "Smith", "google@emaila.net");
         User updatedUser = service.update( user.getId(),"updateFirstName", "UpdatedLastName", "UpdateEmail");
         Assertions.assertAll(
                 () -> Assertions.assertEquals("updateFirstName", updatedUser.getFirstName()),
@@ -38,6 +40,7 @@ public class UserServiceTest extends BaseTest{
 
     @Test
     void findByID() {
+        User user = service.create("Jonh", "Smith", "google@emaila.net");
         service.findByID(user.getId());
         Assertions.assertAll(
                 () -> Assertions.assertEquals("Jonh", user.getFirstName()),
@@ -48,6 +51,8 @@ public class UserServiceTest extends BaseTest{
 
     @Test
     void findAll(){
+        User user = service.create("Jonh", "Smith", "google@emaila.net");
+        User user1 = service.create("Sam", "Johnson", "google@emaila.net");
         Assertions.assertAll(
                 () -> Assertions.assertTrue(service.findAll().contains(user)),
                 () -> Assertions.assertTrue(service.findAll().contains(user1))
@@ -56,21 +61,8 @@ public class UserServiceTest extends BaseTest{
 
     @Test
     void deleteByID() {
-        Assertions.assertEquals(service.findByID(user.getId()), user);
-        service.deleteByID(user.getId());
+        User user = service.create("Jonh", "Smith", "google@emaila.net");
+        Assertions.assertTrue(service.deleteByID(user.getId()));
 
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(service.deleteByID(user.getId())),
-                () -> Assertions.assertThrows(IllegalStateException.class, ()->service.findByID(user.getId()))
-        );
-    }
-
-    @Test
-    void deleteAll() {
-        service.deleteAll();
-        Assertions.assertAll(
-                () -> Assertions.assertFalse(service.findAll().contains(user)),
-                () -> Assertions.assertFalse(service.findAll().contains(user1))
-        );
     }
 }

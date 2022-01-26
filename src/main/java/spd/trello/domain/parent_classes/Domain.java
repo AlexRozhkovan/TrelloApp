@@ -1,7 +1,6 @@
 package spd.trello.domain.parent_classes;
 
-import lombok.Data;
-import lombok.Generated;
+import lombok.*;
 
 import java.util.UUID;
 

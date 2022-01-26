@@ -1,5 +1,6 @@
 package spd.trello.service;
 
+import org.springframework.stereotype.Service;
 import spd.trello.domain.Board;
 import spd.trello.domain.enumerations.BoardVisibility;
 import spd.trello.repository.BoardRepository;
@@ -8,7 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class BoardService extends AbstractService<Board> {
+
     public BoardService(BoardRepository repository) {
         super(repository);
     }
@@ -20,8 +23,7 @@ public class BoardService extends AbstractService<Board> {
         board.setDescription(description);
         board.setVisibility(visibility);
         board.setWorkspaceId(workspaceId);
-        repository.create(board);
-        return board;
+        return repository.create(board);
     }
 
     public Board update(UUID id, String updatedBy, String name, String description, Boolean archived, BoardVisibility visibility) {
@@ -32,7 +34,8 @@ public class BoardService extends AbstractService<Board> {
         byID.setArchived(archived);
         byID.setVisibility(visibility);
         byID.setUpdatedDate(LocalDateTime.now());
-        return repository.update(byID);
+        repository.update(byID);
+        return byID;
     }
 
     public List<Board> findAll() {
@@ -43,11 +46,7 @@ public class BoardService extends AbstractService<Board> {
         return repository.findById(id);
     }
 
-    public boolean deleteAll() {
-        return repository.deleteAll();
-    }
-
     public boolean deleteByID(UUID id) {
-        return  repository.deleteByID(id);
+        return repository.deleteByID(id);
     }
 }

@@ -1,6 +1,6 @@
 package spd.trello.service;
 
-import spd.trello.domain.Board;
+import org.springframework.stereotype.Service;
 import spd.trello.domain.Card;
 import spd.trello.repository.CardRepository;
 
@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class CardService extends AbstractService<Card> {
+
     public CardService(CardRepository repository) {
         super(repository);
     }
@@ -19,8 +21,7 @@ public class CardService extends AbstractService<Card> {
         card.setName(name);
         card.setDescription(description);
         card.setCardListId(cardListId);
-        repository.create(card);
-        return card;
+        return repository.create(card);
     }
 
     public Card update(UUID id, String updatedBy, String name, String description, Boolean archived) {
@@ -30,7 +31,8 @@ public class CardService extends AbstractService<Card> {
         byID.setDescription(description);
         byID.setArchived(archived);
         byID.setUpdatedDate(LocalDateTime.now());
-        return repository.update(byID);
+        repository.update(byID);
+        return byID;
     }
 
     public List<Card> findAll() {
@@ -39,10 +41,6 @@ public class CardService extends AbstractService<Card> {
 
     public Card findByID(UUID id) {
         return repository.findById(id);
-    }
-
-    public boolean deleteAll() {
-        return repository.deleteAll();
     }
 
     public boolean deleteByID(UUID id) {
