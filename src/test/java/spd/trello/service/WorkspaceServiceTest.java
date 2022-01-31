@@ -15,10 +15,15 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void create() {
-        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
+
+        Workspace workspace = new Workspace();
+        workspace.setName("TestName");
+        workspace.setDescription("TestDesc");
+        workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        service.create(workspace);
+
         Assertions.assertNotNull(workspace);
         Assertions.assertAll(
-                () -> Assertions.assertEquals("user", workspace.getCreatedBy()),
                 () -> Assertions.assertEquals("TestName", workspace.getName()),
                 () -> Assertions.assertEquals("TestDesc", workspace.getDescription()),
                 () -> Assertions.assertEquals(WorkspaceVisibility.PUBLIC, workspace.getVisibility())
@@ -27,18 +32,29 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void update() {
-        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Workspace updatedWorkspace = service.update(workspace.getId(), "updateUser", "UpdateName", "UpdateDesc", WorkspaceVisibility.PRIVATE);
+        Workspace workspace = new Workspace();
+        workspace.setName("TestName");
+        workspace.setDescription("TestDesc");
+        workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        service.create(workspace);
+        workspace.setName("UpdatedName");
+        workspace.setDescription("UpdatedDesc");
+        workspace.setVisibility(WorkspaceVisibility.PRIVATE);
+                service.update(workspace);
         Assertions.assertAll(
-                () -> Assertions.assertEquals("UpdateName", updatedWorkspace.getName()),
-                () -> Assertions.assertEquals("UpdateDesc", updatedWorkspace.getDescription()),
-                () -> Assertions.assertEquals(WorkspaceVisibility.PRIVATE, updatedWorkspace.getVisibility())
+                () -> Assertions.assertEquals("UpdatedName", workspace.getName()),
+                () -> Assertions.assertEquals("UpdatedDesc", workspace.getDescription()),
+                () -> Assertions.assertEquals(WorkspaceVisibility.PRIVATE, workspace.getVisibility())
         );
     }
 
     @Test
     void findByID() {
-        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
+        Workspace workspace = new Workspace();
+        workspace.setName("TestName");
+        workspace.setDescription("TestDesc");
+        workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        service.create(workspace);
         service.findByID(workspace.getId());
         Assertions.assertAll(
                 () -> Assertions.assertEquals("user", workspace.getCreatedBy()),
@@ -50,8 +66,17 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void findAll() {
-        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Workspace workspace1 = service.create("user1", "TestName1", "TestDesc1", WorkspaceVisibility.PUBLIC);
+        Workspace workspace = new Workspace();
+        workspace.setName("TestName");
+        workspace.setDescription("TestDesc");
+        workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        service.create(workspace);
+
+        Workspace workspace1 = new Workspace();
+        workspace1.setName("TestName1");
+        workspace1.setDescription("TestDesc1");
+        workspace1.setVisibility(WorkspaceVisibility.PUBLIC);
+        service.create(workspace1);
         Assertions.assertAll(
                 () -> Assertions.assertTrue(service.findAll().contains(workspace)),
                 () -> Assertions.assertTrue(service.findAll().contains(workspace1))
@@ -60,8 +85,13 @@ class WorkspaceServiceTest extends BaseTest {
 
     @Test
     void deleteByID() {
-        Workspace workspace = service.create("user", "TestName", "TestDesc", WorkspaceVisibility.PUBLIC);
-        Assertions.assertTrue(service.deleteByID(workspace.getId()));
+        Workspace workspace = new Workspace();
+        workspace.setName("TestName");
+        workspace.setDescription("TestDesc");
+        workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        service.create(workspace);
+        service.deleteByID(workspace.getId());
+        Assertions.assertFalse(service.findAll().contains(workspace));
 
     }
 }

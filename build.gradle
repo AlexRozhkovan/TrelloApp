@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id "com.github.johnrengelman.shadow" version '7.1.0'
-    id 'org.flywaydb.flyway' version '8.2.2'
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'jacoco'
 }
 
@@ -13,25 +13,20 @@ repositories {
 }
 
 dependencies {
+
+    testImplementation 'com.h2database:h2:1.4.200'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.1'
+
+   // implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.2.2'
+
     annotationProcessor'org.projectlombok:lombok:1.18.22'
     implementation 'org.projectlombok:lombok:1.18.22'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.0'
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.2.2'
-    testImplementation 'com.h2database:h2:1.4.200'
-    implementation 'org.springframework.boot:spring-boot-configuration-processor:2.6.3'
-    implementation 'org.springframework.boot:spring-boot-starter:2.6.3'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.3'
-    testImplementation 'org.springframework.boot:spring-boot-test:2.6.3'
-    testImplementation 'org.springframework:spring-test:5.3.15'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
 
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
-
-
-
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

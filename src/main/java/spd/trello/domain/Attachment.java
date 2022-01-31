@@ -1,3 +1,4 @@
+/*
 package spd.trello.domain;
 
 import lombok.*;
@@ -19,3 +20,4 @@ public class Attachment extends Domain {
     private UUID commentId;
 
 }
+*/

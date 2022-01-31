@@ -1,28 +1,50 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import spd.trello.domain.parent_classes.Resource;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.*;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
-@ToString(callSuper = true)
+@Getter
+@Setter
 @Generated
+@Entity
+@Table(name = "cards")
 public class Card extends Resource {
 
     private String name;
     private String description;
     private Boolean archived = Boolean.FALSE;
-    private Reminder reminder;
-    private List<Member> assignedMembers = new ArrayList<>();
-    private UUID cardListId;
+
+
+    /*@ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(
+            name = "cards_members",
+            joinColumns=@JoinColumn(name= "card_id")
+    )
+    @Column(name = "member_id")
+    private Set<UUID> memberIds = new HashSet<>();*/
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cards_members",
+            joinColumns = @JoinColumn(name = "card_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id"))
+    private Set<Member> members;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "cardlist_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("card")
+    private CardList cardList;
+
+
+
     /*private List<Label> labels = new ArrayList<>();
+    private Reminder reminder;
     private List<Attachment> attachments = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
     private List<CheckList> checkLists = new ArrayList<>();*/

@@ -2,7 +2,7 @@ package spd.trello.service;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.flywaydb.core.Flyway;
+
 import org.junit.jupiter.api.BeforeAll;
 
 public class BaseTest {
@@ -17,11 +17,11 @@ public class BaseTest {
         cfg.setMaximumPoolSize(10);
         cfg.setDriverClassName("org.h2.Driver");
         dataSource = new HikariDataSource(cfg);
-        Flyway flyway = Flyway.configure()
+        /*Flyway flyway = Flyway.configure()
                 .locations("classpath:migrationsForDB/tables")
                 .dataSource(dataSource)
                 .load();
-        flyway.migrate();
+        flyway.migrate();*/
 
 
     }

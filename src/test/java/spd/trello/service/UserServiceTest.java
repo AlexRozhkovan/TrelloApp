@@ -1,3 +1,4 @@
+/*
 package spd.trello.service;
 
 import org.junit.jupiter.api.Assertions;
@@ -66,3 +67,4 @@ public class UserServiceTest extends BaseTest{
 
     }
 }
+*/

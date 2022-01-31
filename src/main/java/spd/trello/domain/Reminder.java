@@ -1,3 +1,4 @@
+/*
 package spd.trello.domain;
 
 import lombok.Data;
@@ -20,3 +21,4 @@ public class Reminder extends Domain {
     private Boolean active = Boolean.FALSE;
 
 }
+*/

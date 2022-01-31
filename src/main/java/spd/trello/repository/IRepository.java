@@ -1,17 +1,17 @@
 package spd.trello.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import spd.trello.domain.parent_classes.Resource;
+
 import java.util.List;
 import java.util.UUID;
 
-public interface IRepository<T> {
-    T findById(UUID id);
-
-    T create(T entity);
-
-    List<T> findAll();
-
-    void update(T entity);
-
-    boolean deleteByID(UUID id);
+@NoRepositoryBean
+public interface IRepository<E extends Resource> extends JpaRepository<E, UUID>,
+        PagingAndSortingRepository<E, UUID>,
+        JpaSpecificationExecutor<E> {
 }
 

@@ -10,44 +10,34 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class WorkspaceService extends AbstractService<Workspace> {
+public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository> {
 
     public WorkspaceService(WorkspaceRepository repository) {
         super(repository);
     }
 
-    public Workspace create(String createdBy, String name, String description, WorkspaceVisibility visibility) {
-        Workspace workspace = new Workspace();
-        workspace.setCreatedBy(createdBy);
-        workspace.setName(name);
-        workspace.setDescription(description);
-        workspace.setVisibility(visibility);
-        return repository.create(workspace);
-
+    public Workspace create(Workspace entity) {
+        entity.getBoards().forEach(board -> board.setWorkspace(entity));
+        return super.save(entity);
     }
 
-    public Workspace update(UUID id, String updatedBy, String name, String description, WorkspaceVisibility visibility) {
-        Workspace byID = repository.findById(id);
-        byID.setUpdatedBy(updatedBy);
-        byID.setUpdatedDate(LocalDateTime.now());
-        byID.setName(name);
-        byID.setDescription(description);
-        byID.setVisibility(visibility);
-        byID.setUpdatedDate(LocalDateTime.now());
-        repository.update(byID);
-        return byID;
+    public Workspace update(Workspace entity) {
+        return super.update(entity);
     }
 
     public List<Workspace> findAll() {
-        return repository.findAll();
+        return super.getAll();
     }
 
     public Workspace findByID(UUID id) {
-        return repository.findById(id);
+        return super.getById(id);
     }
 
-    public boolean deleteByID(UUID id) {
-        return repository.deleteByID(id);
+    public List<Workspace> findByName(String name) {
+        return repository.findByName(name);
     }
 
+    public void deleteByID(UUID id) {
+        super.deleteById(id);
+    }
 }

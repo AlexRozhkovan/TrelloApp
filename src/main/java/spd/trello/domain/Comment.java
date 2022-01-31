@@ -1,3 +1,4 @@
+/*
 package spd.trello.domain;
 
 import lombok.*;
@@ -22,3 +23,4 @@ public class Comment extends Resource {
     private UUID cardId;
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package spd.trello.domain;
 
 import lombok.*;
@@ -18,3 +19,4 @@ public class Label extends Domain {
     private UUID cardId;
 
 }
+*/
