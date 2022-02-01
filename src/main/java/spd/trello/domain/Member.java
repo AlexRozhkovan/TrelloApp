@@ -1,22 +1,21 @@
 package spd.trello.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import spd.trello.domain.enumerations.Role;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Generated
 @Entity
-@Table(name = "members")public class Member extends Resource {
+@Table(name = "members")
+public class Member extends Resource {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -50,5 +49,4 @@ import java.util.UUID;
     )
     @Column(name = "card_id")
     private Set<UUID> cardsIds = new HashSet<>();*/
-
 }

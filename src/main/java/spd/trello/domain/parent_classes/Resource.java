@@ -1,20 +1,18 @@
 package spd.trello.domain.parent_classes;
 
-import lombok.*;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import spd.trello.domain.Member;
-import spd.trello.domain.User;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Getter
@@ -37,5 +35,4 @@ public abstract class Resource extends Domain {
 
     @LastModifiedDate
     private LocalDateTime updatedDate;
-
 }

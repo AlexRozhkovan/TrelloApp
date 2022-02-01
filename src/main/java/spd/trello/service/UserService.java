@@ -2,11 +2,8 @@ package spd.trello.service;
 
 import org.springframework.stereotype.Service;
 import spd.trello.domain.User;
-import spd.trello.domain.Workspace;
 import spd.trello.repository.UserRepository;
-import spd.trello.repository.WorkspaceRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,5 +33,9 @@ public class UserService extends AbstractService<User, UserRepository> {
 
     public void deleteByID(UUID id) {
         super.deleteById(id);
+    }
+
+    public List<User> findByFirstName(String firstName) {
+        return repository.findByFirstName(firstName);
     }
 }

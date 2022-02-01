@@ -2,10 +2,8 @@ package spd.trello.service;
 
 import org.springframework.stereotype.Service;
 import spd.trello.domain.Workspace;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.repository.WorkspaceRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

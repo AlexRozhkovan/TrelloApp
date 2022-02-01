@@ -1,6 +1,8 @@
 package spd.trello.domain.parent_classes;
 
-import lombok.*;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;

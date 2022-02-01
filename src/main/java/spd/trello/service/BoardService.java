@@ -2,11 +2,8 @@ package spd.trello.service;
 
 import org.springframework.stereotype.Service;
 import spd.trello.domain.Board;
-import spd.trello.domain.Card;
-import spd.trello.domain.enumerations.BoardVisibility;
 import spd.trello.repository.BoardRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,4 +34,9 @@ public class BoardService extends AbstractService<Board, BoardRepository> {
     public void deleteByID(UUID id) {
         super.deleteById(id);
     }
+
+    public List<Board> findByName(String name) {
+        return repository.findByName(name);
+    }
+
 }

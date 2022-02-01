@@ -1,14 +1,16 @@
 package spd.trello.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import spd.trello.domain.enumerations.BoardVisibility;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -44,7 +46,7 @@ public class Board extends Resource {
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     private Set<Member> members;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "board", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("board")
     private List<CardList> cardLists = new ArrayList<>();
 

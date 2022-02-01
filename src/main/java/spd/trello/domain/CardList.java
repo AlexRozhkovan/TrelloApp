@@ -1,13 +1,14 @@
 package spd.trello.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter

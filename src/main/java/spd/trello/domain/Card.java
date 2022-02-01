@@ -1,13 +1,13 @@
 package spd.trello.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,5 +48,4 @@ public class Card extends Resource {
     private List<Attachment> attachments = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
     private List<CheckList> checkLists = new ArrayList<>();*/
-
 }

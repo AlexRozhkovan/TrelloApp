@@ -1,9 +1,6 @@
 package spd.trello.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import spd.trello.domain.Workspace;
 
@@ -16,8 +13,7 @@ public interface WorkspaceRepository extends IRepository<Workspace> {
     List<Workspace> findByName(String name);
 
     @Query(nativeQuery = true, value = "SELECT w.* FROM workspaces w INNER JOIN workspaces_members wm on w.id = wm.workspace_id " +
-    "INNER JOIN members m on wm.member_id = m.id")
+            "INNER JOIN members m on wm.member_id = m.id")
     List<Workspace> findByMemberId(UUID membersIds);
-
 
 }

@@ -15,6 +15,4 @@ public enum Color {
     Color(String hash) {
         this.hash = hash;
     }
-
-
 }
