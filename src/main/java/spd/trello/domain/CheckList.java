@@ -1,22 +1,24 @@
-/*
 package spd.trello.domain;
 
-import lombok.*;
-import spd.trello.domain.parent_classes.Domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import spd.trello.domain.parent_classes.Resource;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
-@ToString(callSuper = true)
+@Getter
+@Setter
 @Generated
-public class CheckList extends Domain {
+@Entity
+@Table(name = "check_lists")
+public class CheckList extends Resource {
 
     private String name;
-    //private List<CheckableItem> items = new ArrayList<>();
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("checkList")
+    private Card card;
 }
-*/

@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Generated
 @Entity
-@Table(name = "cardlists")
+@Table(name = "card_lists")
 public class CardList extends Resource {
 
     private String name;
