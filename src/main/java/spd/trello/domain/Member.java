@@ -25,28 +25,4 @@ public class Member extends Resource {
     @Enumerated(EnumType.STRING)
     private Role role = Role.GUEST;
 
-    @ManyToMany(mappedBy = "members")
-    private Set<Workspace> workspaces;
-
-    @ManyToMany(mappedBy = "members")
-    private Set<Card> cards;
-
-    @ManyToMany(mappedBy = "members")
-    private Set<Board> boards;
-
-    /*@ElementCollection
-    @CollectionTable(
-            name = "boards_members",
-            joinColumns=@JoinColumn(name= "member_id")
-    )
-    @Column(name = "board_id")
-    private Set<UUID> boardsIds = new HashSet<>();*/
-
-    /*@ElementCollection
-    @CollectionTable(
-            name = "cards_members",
-            joinColumns=@JoinColumn(name= "member_id")
-    )
-    @Column(name = "card_id")
-    private Set<UUID> cardsIds = new HashSet<>();*/
 }

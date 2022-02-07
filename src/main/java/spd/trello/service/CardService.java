@@ -15,6 +15,8 @@ public class CardService extends AbstractService<Card, CardRepository> {
     }
 
     public Card create(Card entity) {
+        entity.getComments().forEach(comment -> comment.setCard(entity));
+        entity.getAttachments().forEach(attachment -> attachment.setCard(entity));
         return super.save(entity);
     }
 

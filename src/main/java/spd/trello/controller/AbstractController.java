@@ -18,14 +18,12 @@ public class AbstractController<E extends Resource, S extends CommonService<E>> 
         this.service = service;
     }
 
-
     @PostMapping
     @Override
     public ResponseEntity<E> create(@RequestBody E resource) {
         E result = service.save(resource);
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
-
 
     @PutMapping("/id/{id}")
     @Override

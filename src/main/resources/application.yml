@@ -30,8 +30,3 @@ server:
   error:
     include-message: always
     include-exception: true
-
-application:
-  pagination-feature: true
-
-
