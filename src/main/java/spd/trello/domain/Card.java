@@ -52,4 +52,13 @@ public class Card extends Resource {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "card", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("card")
     private List<Attachment> attachments = new ArrayList<>();
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(
+            name = "cards_labels",
+            joinColumns=@JoinColumn(name= "card_id")
+    )
+    @Column(name = "label_id")
+    private Set<UUID> labelIds = new HashSet<>();
 }

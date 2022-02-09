@@ -2,6 +2,7 @@ package spd.trello.service;
 
 import org.springframework.stereotype.Service;
 import spd.trello.domain.User;
+import spd.trello.exception.IsAlreadyExist;
 import spd.trello.repository.UserRepository;
 
 import java.util.List;
@@ -15,8 +16,12 @@ public class UserService extends AbstractService<User, UserRepository> {
     }
 
     public User create(User entity) {
-        entity.getMembers().forEach(member -> member.setUser(entity));
-        return super.save(entity);
+        if (isExists(entity)) {
+            throw new IsAlreadyExist();
+        }else {
+            entity.getMembers().forEach(member -> member.setUser(entity));
+            return super.save(entity);
+        }
     }
 
     public User update(User entity) {

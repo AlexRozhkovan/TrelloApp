@@ -2,6 +2,7 @@ package spd.trello.service;
 
 import org.springframework.stereotype.Service;
 import spd.trello.domain.Reminder;
+import spd.trello.exception.IsAlreadyExist;
 import spd.trello.repository.ReminderRepository;
 
 import java.util.List;
@@ -15,7 +16,11 @@ public class ReminderService extends AbstractService<Reminder, ReminderRepositor
     }
 
     public Reminder create(Reminder entity) {
-        return super.save(entity);
+        if (isExists(entity)) {
+            throw new IsAlreadyExist();
+        } else {
+            return super.save(entity);
+        }
     }
 
     public Reminder update(Reminder entity) {

@@ -1,22 +1,26 @@
-/*
+
 package spd.trello.domain;
 
-import lombok.*;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import spd.trello.domain.enumerations.Color;
-import spd.trello.domain.parent_classes.Domain;
 import spd.trello.domain.parent_classes.Resource;
 
-import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
-@ToString(callSuper = true)
+@Getter
+@Setter
 @Generated
-public class Label extends Domain {
+@Entity
+@Table(name = "labels")
+public class Label extends Resource {
 
     private String name;
-    private Color color = Color.BLACK;
-    private UUID cardId;
 
+    @Enumerated(EnumType.STRING)
+    private Color color = Color.BLACK;
 }
-*/

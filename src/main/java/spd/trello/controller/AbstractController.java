@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spd.trello.domain.parent_classes.Resource;
-import spd.trello.exception.ResourceNotFoundException;
+import spd.trello.exception.NotFoundException;
 import spd.trello.service.CommonService;
 
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ public class AbstractController<E extends Resource, S extends CommonService<E>> 
     @Override
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody E resource) {
         E entity = service.getById(id);
-        if (entity == null) throw new ResourceNotFoundException();
+        if (entity == null) throw new NotFoundException();
         resource.setUpdatedDate(LocalDateTime.now());
         E result = service.update(resource);
         return new ResponseEntity(result, HttpStatus.OK);

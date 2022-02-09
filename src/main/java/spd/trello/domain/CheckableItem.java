@@ -1,22 +1,20 @@
 /*
+
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
-import lombok.ToString;
+import lombok.*;
 import spd.trello.domain.parent_classes.Domain;
 
-import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
-@ToString(callSuper = true)
+@Getter
+@Setter
 @Generated
+@Entity
+@Table(name = "checkable_items")
 public class CheckableItem extends Domain {
 
     private String name;
     private Boolean checked = Boolean.FALSE;
-    private UUID checkListId;
-}
-*/
+}*/
