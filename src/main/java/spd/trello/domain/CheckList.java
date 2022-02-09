@@ -16,7 +16,6 @@ import javax.persistence.*;
 public class CheckList extends Domain {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("checkList")
     private CheckableItem checkableItem;
 
     private String name;

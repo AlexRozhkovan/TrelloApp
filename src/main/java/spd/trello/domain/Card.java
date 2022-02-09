@@ -34,10 +34,8 @@ public class Card extends Resource {
     private Set<UUID> memberIds = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("card")
     private List<CheckList> checkLists = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("card")
     private Reminder reminder;
 }
