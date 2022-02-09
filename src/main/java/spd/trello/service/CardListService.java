@@ -15,7 +15,6 @@ public class CardListService extends AbstractService<CardList, CardListRepositor
     }
 
     public CardList create(CardList entity) {
-        entity.getCards().forEach(card -> card.setCardList(entity));
         return super.save(entity);
     }
 

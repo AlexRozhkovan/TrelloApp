@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface MemberRepository extends IRepository<Member> {
 
-    List<Member> findByUser(User user);
-
 }

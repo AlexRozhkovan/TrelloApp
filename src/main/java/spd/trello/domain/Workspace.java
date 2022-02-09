@@ -1,6 +1,5 @@
 package spd.trello.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +9,9 @@ import spd.trello.domain.enumerations.WorkspaceVisibility;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -29,13 +30,8 @@ public class Workspace extends Resource {
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
             name = "workspaces_members",
-            joinColumns=@JoinColumn(name= "workspace_id")
+            joinColumns = @JoinColumn(name = "workspace_id")
     )
     @Column(name = "member_id")
-    Set<UUID> memberIds = new HashSet<>();;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "workspace", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("workspace")
-    private List<Board> boards = new ArrayList<>();
-
+    Set<UUID> memberIds = new HashSet<>();
 }

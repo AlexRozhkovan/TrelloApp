@@ -15,7 +15,7 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
     }
 
     public Workspace create(Workspace entity) {
-        entity.getBoards().forEach(board -> board.setWorkspace(entity));
+        //entity.getBoards().forEach(board -> board.setWorkspace(entity));
         return super.save(entity);
     }
 

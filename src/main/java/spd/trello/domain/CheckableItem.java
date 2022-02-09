@@ -1,5 +1,3 @@
-/*
-
 package spd.trello.domain;
 
 import lombok.*;
@@ -17,4 +15,4 @@ public class CheckableItem extends Domain {
 
     private String name;
     private Boolean checked = Boolean.FALSE;
-}*/
+}

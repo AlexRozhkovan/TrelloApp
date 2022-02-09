@@ -19,7 +19,6 @@ public class UserService extends AbstractService<User, UserRepository> {
         if (isExists(entity)) {
             throw new IsAlreadyExist();
         }else {
-            entity.getMembers().forEach(member -> member.setUser(entity));
             return super.save(entity);
         }
     }

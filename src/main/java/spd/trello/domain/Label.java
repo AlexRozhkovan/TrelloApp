@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 public class Label extends Resource {
 
     private String name;
+    private UUID cardId;
 
     @Enumerated(EnumType.STRING)
     private Color color = Color.BLACK;

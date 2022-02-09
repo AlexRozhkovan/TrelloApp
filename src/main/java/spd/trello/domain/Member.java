@@ -1,14 +1,16 @@
 package spd.trello.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import spd.trello.domain.enumerations.Role;
 import spd.trello.domain.parent_classes.Resource;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,12 +19,8 @@ import java.util.Set;
 @Table(name = "members")
 public class Member extends Resource {
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("member")
-    private User user;
+    private UUID userId;
 
     @Enumerated(EnumType.STRING)
     private Role role = Role.GUEST;
-
 }

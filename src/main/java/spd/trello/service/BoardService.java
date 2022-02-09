@@ -15,7 +15,6 @@ public class BoardService extends AbstractService<Board, BoardRepository> {
     }
 
     public Board create(Board entity) {
-        entity.getCardLists().forEach(cardList -> cardList.setBoard(entity));
         return super.save(entity);
     }
 

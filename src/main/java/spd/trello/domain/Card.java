@@ -21,44 +21,23 @@ public class Card extends Resource {
     private String name;
     private String description;
     private Boolean archived = Boolean.FALSE;
+    private UUID cardListId;
 
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
             name = "cards_members",
-            joinColumns=@JoinColumn(name= "card_id")
+            joinColumns = @JoinColumn(name = "card_id")
     )
     @Column(name = "member_id")
     private Set<UUID> memberIds = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "card_list_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("card")
-    private CardList cardList;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "card", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JsonIgnoreProperties("card")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "card", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("card")
     private List<CheckList> checkLists = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "card", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("card")
-    private List<Reminder> reminders = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "card", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("card")
-    private List<Attachment> attachments = new ArrayList<>();
-
-    @ElementCollection
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @CollectionTable(
-            name = "cards_labels",
-            joinColumns=@JoinColumn(name= "card_id")
-    )
-    @Column(name = "label_id")
-    private Set<UUID> labelIds = new HashSet<>();
+    private Reminder reminder;
 }

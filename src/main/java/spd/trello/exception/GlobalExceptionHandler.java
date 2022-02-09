@@ -23,7 +23,7 @@ public class GlobalExceptionHandler
         body.put("timestamp", LocalDateTime.now());
         body.put("message", "Something went wrong..");
         return handleExceptionInternal(ex, body,
-                new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+                new HttpHeaders(), HttpStatus.NO_CONTENT, request);
     }
 
     @ExceptionHandler(IsAlreadyExist.class)
@@ -43,6 +43,6 @@ public class GlobalExceptionHandler
         body.put("message", "No such resource!");
 
         return handleExceptionInternal(ex, body,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }
