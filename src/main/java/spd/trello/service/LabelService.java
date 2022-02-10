@@ -33,5 +33,4 @@ public class LabelService extends AbstractService<Label, LabelRepository> {
     public void deleteByID(UUID id) {
         super.deleteById(id);
     }
-
 }

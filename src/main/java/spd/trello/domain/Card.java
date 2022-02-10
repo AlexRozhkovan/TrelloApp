@@ -1,6 +1,5 @@
 package spd.trello.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,5 +36,4 @@ public class Card extends Resource {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "card", cascade = CascadeType.ALL)
     private List<CheckList> checkLists = new ArrayList<>();
-
 }

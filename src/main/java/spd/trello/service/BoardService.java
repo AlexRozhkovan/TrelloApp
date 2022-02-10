@@ -33,9 +33,4 @@ public class BoardService extends AbstractService<Board, BoardRepository> {
     public void deleteByID(UUID id) {
         super.deleteById(id);
     }
-
-    public List<Board> findByName(String name) {
-        return repository.findByName(name);
-    }
-
 }

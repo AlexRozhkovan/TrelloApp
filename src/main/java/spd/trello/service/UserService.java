@@ -18,7 +18,7 @@ public class UserService extends AbstractService<User, UserRepository> {
     public User create(User entity) {
         if (isExists(entity)) {
             throw new IsAlreadyExist();
-        }else {
+        } else {
             return super.save(entity);
         }
     }

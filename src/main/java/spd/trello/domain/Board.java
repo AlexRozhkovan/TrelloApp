@@ -36,5 +36,4 @@ public class Board extends Resource {
     )
     @Column(name = "member_id")
     private Set<UUID> memberIds = new HashSet<>();
-
 }

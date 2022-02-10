@@ -1,7 +1,5 @@
 package spd.trello.service;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import spd.trello.domain.Member;
 import spd.trello.exception.IsAlreadyExist;
@@ -20,7 +18,7 @@ public class MemberService extends AbstractService<Member, MemberRepository> {
     public Member create(Member entity) {
         if (isExists(entity)) {
             throw new IsAlreadyExist();
-        }else {
+        } else {
             return super.save(entity);
         }
     }

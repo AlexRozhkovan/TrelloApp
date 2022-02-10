@@ -33,8 +33,4 @@ public class CardService extends AbstractService<Card, CardRepository> {
     public void deleteByID(UUID id) {
         super.deleteById(id);
     }
-
-    public List<Card> findByName(String name) {
-        return repository.findByName(name);
-    }
 }

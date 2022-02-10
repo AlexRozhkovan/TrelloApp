@@ -15,7 +15,6 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
     }
 
     public Workspace create(Workspace entity) {
-        //entity.getBoards().forEach(board -> board.setWorkspace(entity));
         return super.save(entity);
     }
 
@@ -29,10 +28,6 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
 
     public Workspace findByID(UUID id) {
         return super.getById(id);
-    }
-
-    public List<Workspace> findByName(String name) {
-        return repository.findByName(name);
     }
 
     public void deleteByID(UUID id) {

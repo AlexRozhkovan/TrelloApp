@@ -8,6 +8,7 @@ import spd.trello.exception.NotFoundException;
 import spd.trello.service.CommonService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class AbstractController<E extends Resource, S extends CommonService<E>> 
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody E resource) {
         E entity = service.getById(id);
         if (entity == null) throw new NotFoundException();
-        resource.setUpdatedDate(LocalDateTime.now());
+        resource.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         E result = service.update(resource);
         return new ResponseEntity(result, HttpStatus.OK);
     }

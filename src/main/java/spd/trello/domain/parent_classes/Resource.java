@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
@@ -31,8 +32,8 @@ public abstract class Resource extends Domain {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 
     @LastModifiedDate
-    private LocalDateTime updatedDate;
+    private String updatedDate;
 }

@@ -15,5 +15,4 @@ public interface WorkspaceRepository extends IRepository<Workspace> {
     @Query(nativeQuery = true, value = "SELECT w.* FROM workspaces w INNER JOIN workspaces_members wm on w.id = wm.workspace_id " +
             "INNER JOIN members m on wm.member_id = m.id")
     List<Workspace> findByMemberId(UUID membersIds);
-
 }
