@@ -23,7 +23,6 @@ public class Card extends Resource {
     private Boolean archived = Boolean.FALSE;
     private UUID cardListId;
 
-
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
@@ -33,9 +32,10 @@ public class Card extends Resource {
     @Column(name = "member_id")
     private Set<UUID> memberIds = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CheckList> checkLists = new ArrayList<>();
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Reminder reminder;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "card", cascade = CascadeType.ALL)
+    private List<CheckList> checkLists = new ArrayList<>();
+
 }

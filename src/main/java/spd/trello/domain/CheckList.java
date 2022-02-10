@@ -7,6 +7,8 @@ import lombok.Setter;
 import spd.trello.domain.parent_classes.Domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,8 +17,13 @@ import javax.persistence.*;
 @Table(name = "check_lists")
 public class CheckList extends Domain {
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CheckableItem checkableItem;
-
     private String name;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    private Card card;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "checkList", cascade = CascadeType.ALL)
+    private List<CheckableItem> items = new ArrayList<>();
+
 }
