@@ -1,5 +1,6 @@
 package spd.trello.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +19,7 @@ public class CheckList extends Domain {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "card_id", referencedColumnName = "id")
-    private Card card;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "checkList", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("checkList")
     private List<CheckableItem> items = new ArrayList<>();
 }

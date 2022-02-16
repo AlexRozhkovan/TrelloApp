@@ -12,9 +12,9 @@ public interface CommonController<E extends Resource> {
 
     ResponseEntity<E> update(UUID id, E resource);
 
-    HttpStatus deleteById(UUID id);
+    ResponseEntity<HttpStatus> deleteById(UUID id);
 
     ResponseEntity<E> readById(UUID id);
 
-    List<E> readAll();
+    ResponseEntity<E> readAll();
 }
