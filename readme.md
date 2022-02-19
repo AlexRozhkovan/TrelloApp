@@ -1,2 +1,2 @@
-[![pipeline status](https://gitlab.com/AlexRozhkovan/java/badges/jdbc/pipeline.svg)](https://gitlab.com/AlexRozhkovan/java/-/commits/mock_tests)
-[![coverage report](https://gitlab.com/AlexRozhkovan/java/badges/jdbc/coverage.svg)](https://gitlab.com/AlexRozhkovan/java/-/commits/mock_tests)
+[![pipeline status](https://gitlab.com/AlexRozhkovan/java/badges/mock_tests/pipeline.svg)](https://gitlab.com/AlexRozhkovan/java/-/commits/mock_tests)
+[![coverage report](https://gitlab.com/AlexRozhkovan/java/badges/mock_tests/coverage.svg)](https://gitlab.com/AlexRozhkovan/java/-/commits/mock_tests)
