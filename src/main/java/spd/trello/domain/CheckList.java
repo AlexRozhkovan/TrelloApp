@@ -19,7 +19,6 @@ public class CheckList extends Domain {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("checkList")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CheckableItem> items = new ArrayList<>();
 }

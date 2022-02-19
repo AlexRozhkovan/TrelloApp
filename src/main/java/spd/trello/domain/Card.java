@@ -32,10 +32,9 @@ public class Card extends Resource {
     @Column(name = "member_id")
     private Set<UUID> memberIds = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Reminder reminder;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("card")
     private List<CheckList> checkLists = new ArrayList<>();
 }
