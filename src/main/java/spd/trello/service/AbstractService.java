@@ -1,8 +1,7 @@
 package spd.trello.service;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import spd.trello.domain.parent_classes.Resource;
+import spd.trello.exception.InvalidRequestException;
 import spd.trello.exception.NotFoundException;
 import spd.trello.repository.IRepository;
 
@@ -19,17 +18,29 @@ public abstract class AbstractService<E extends Resource, R extends IRepository<
 
     @Override
     public E save(E entity) {
-        return repository.save(entity);
+        try {
+            return repository.save(entity);
+        } catch (Exception e) {
+            throw new InvalidRequestException();
+        }
     }
 
     @Override
     public E update(E entity) {
-        return repository.save(entity);
+        try {
+            return repository.save(entity);
+        } catch (Exception e) {
+            throw new NotFoundException();
+        }
     }
 
     @Override
     public void deleteById(UUID id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException();
+        }
     }
 
     @Override
@@ -42,10 +53,4 @@ public abstract class AbstractService<E extends Resource, R extends IRepository<
         return repository.findAll();
     }
 
-    public boolean isExists(E entity) {
-        ExampleMatcher modelMatcher = ExampleMatcher.matching()
-                .withIgnorePaths("id", "createdDate", "updatedBy", "updatedDate");
-        Example<E> example = Example.of(entity, modelMatcher);
-        return repository.exists(example);
-    }
 }

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spd.trello.domain.parent_classes.Resource;
+import spd.trello.exception.InvalidRequestException;
 import spd.trello.exception.NotFoundException;
 import spd.trello.service.CommonService;
 
@@ -21,18 +22,26 @@ public class AbstractController<E extends Resource, S extends CommonService<E>> 
     @PostMapping
     @Override
     public ResponseEntity<E> create(@RequestBody E resource) {
-        E result = service.save(resource);
-        return new ResponseEntity(result, HttpStatus.CREATED);
+        try {
+            E result = service.save(resource);
+            return new ResponseEntity(result, HttpStatus.CREATED);
+        } catch (Exception e) {
+            throw new InvalidRequestException();
+        }
     }
 
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody E resource) {
-        E entity = service.getById(id);
-        if (entity == null) throw new NotFoundException();
-        resource.setUpdatedDate(LocalDateTime.now());
-        E result = service.update(resource);
-        return new ResponseEntity(result, HttpStatus.OK);
+        try {
+            E entity = service.getById(id);
+            if (entity == null) throw new NotFoundException();
+            resource.setUpdatedDate(LocalDateTime.now());
+            E result = service.update(resource);
+            return new ResponseEntity(result, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new InvalidRequestException();
+        }
     }
 
     @DeleteMapping("/{id}")

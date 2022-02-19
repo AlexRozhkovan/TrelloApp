@@ -35,7 +35,7 @@ public class Card extends Resource {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Reminder reminder;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("card")
     private List<CheckList> checkLists = new ArrayList<>();
 }

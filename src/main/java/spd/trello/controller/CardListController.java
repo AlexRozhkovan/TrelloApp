@@ -7,7 +7,7 @@ import spd.trello.domain.CardList;
 import spd.trello.service.CardListService;
 
 @RestController
-@RequestMapping(value = "/cardlists", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/card_lists", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CardListController extends AbstractController<CardList, CardListService> {
 
     public CardListController(CardListService service) {

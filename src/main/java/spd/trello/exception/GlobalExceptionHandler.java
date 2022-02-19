@@ -1,5 +1,6 @@
 package spd.trello.exception;
 
+import lombok.Generated;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,28 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Generated
 public class GlobalExceptionHandler
         extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler(value = { NullPointerException.class, IllegalArgumentException.class })
-    protected ResponseEntity<Object> handle(
-            RuntimeException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Something went wrong..");
-        return handleExceptionInternal(ex, body,
-                new HttpHeaders(), HttpStatus.NO_CONTENT, request);
-    }
-
-    @ExceptionHandler(IsAlreadyExist.class)
-    public ResponseEntity handleResourceIsAlreadyExist(RuntimeException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Resource is already exist");
-
-        return handleExceptionInternal(ex, body,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity handleResourceNotFoundException(RuntimeException ex, WebRequest request) {
@@ -44,5 +26,16 @@ public class GlobalExceptionHandler
 
         return handleExceptionInternal(ex, body,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity handleInvalidRequestException(RuntimeException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "Invalid Request");
+
+        return handleExceptionInternal(ex, body,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
     }
 }

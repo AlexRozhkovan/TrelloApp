@@ -10,9 +10,7 @@ import java.sql.SQLException;
 public class TrelloApplication {
 
     public static void main(String[] args) throws SQLException, IOException {
-
         SpringApplication.run(TrelloApplication.class, args);
-
     }
 }
 
