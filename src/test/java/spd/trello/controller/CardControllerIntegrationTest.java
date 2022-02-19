@@ -77,6 +77,7 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
     void getAllSuccess() throws Exception {
         MvcResult result = super.getAll(URL_TEMPLATE);
         assertAll(
+                () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus()),
                 () -> assertEquals("application/json", result.getResponse().getContentType())
         );
     }
