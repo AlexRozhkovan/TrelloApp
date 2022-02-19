@@ -2,7 +2,6 @@ package spd.trello.controller;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,15 +11,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.Member;
-import spd.trello.domain.User;
-import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.Role;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -33,9 +28,7 @@ class MemberControllerIntegrationTest extends AbstractIntegrationTest<Member> {
     @Test
     void getByIdFailure() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.getById(URL_TEMPLATE, id);
-
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
@@ -69,7 +62,6 @@ class MemberControllerIntegrationTest extends AbstractIntegrationTest<Member> {
     @Test
     void deleteFailed() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.delete(URL_TEMPLATE, id);
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
@@ -91,7 +83,6 @@ class MemberControllerIntegrationTest extends AbstractIntegrationTest<Member> {
 
     @Test
     void createSuccess() throws Exception {
-
         Member entity = new Member();
         entity.setRole(Role.OWNER);
         entity.setUserId(UUID.randomUUID());
@@ -106,23 +97,20 @@ class MemberControllerIntegrationTest extends AbstractIntegrationTest<Member> {
 
     @Test
     void createFailed() throws Exception {
-
         Member entity = new Member();
         entity.setRole(Role.OWNER);
         MvcResult result = super.create(URL_TEMPLATE, entity);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
     @Test
-    void update() throws Exception{
+    void update() throws Exception {
         Member entity = new Member();
         entity.setRole(Role.OWNER);
         entity.setUserId(UUID.randomUUID());
         super.create(URL_TEMPLATE, entity);
         entity.setRole(Role.ADMIN);
-        MvcResult result = super.update(URL_TEMPLATE, entity.getId() ,entity);
-
+        MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
         assertAll(
                 () -> assertNotNull(getValue(result, "$.id")),
                 () -> assertEquals(entity.getRole().toString(), getValue(result, "$.role")));

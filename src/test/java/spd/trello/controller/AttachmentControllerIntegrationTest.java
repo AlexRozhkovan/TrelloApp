@@ -2,7 +2,6 @@ package spd.trello.controller;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,9 +11,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.Attachment;
-import spd.trello.domain.Comment;
-import spd.trello.domain.Workspace;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.util.UUID;
 
@@ -31,9 +27,7 @@ class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attach
     @Test
     void getByIdFailure() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.getById(URL_TEMPLATE, id);
-
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
@@ -67,7 +61,6 @@ class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attach
     @Test
     void deleteFailed() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.delete(URL_TEMPLATE, id);
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
@@ -89,11 +82,9 @@ class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attach
 
     @Test
     void createSuccess() throws Exception {
-
         Attachment entity = new Attachment();
         entity.setName("name");
         entity.setLink("link");
-
         MvcResult result = super.create(URL_TEMPLATE, entity);
         assertAll(
                 () -> assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus()),
@@ -105,11 +96,9 @@ class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attach
 
     @Test
     void createFailed() throws Exception {
-
         Attachment entity = new Attachment();
         entity.setLink("link");
         MvcResult result = super.create(URL_TEMPLATE, entity);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
@@ -122,7 +111,6 @@ class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attach
         entity.setName("UpdatedName");
         entity.setLink("UpdatedLink");
         MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
-
         assertAll(
                 () -> assertNotNull(getValue(result, "$.id")),
                 () -> assertEquals(entity.getName(), getValue(result, "$.name")),

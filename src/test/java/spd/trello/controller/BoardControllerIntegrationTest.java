@@ -2,7 +2,6 @@ package spd.trello.controller;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,14 +11,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.Board;
-import spd.trello.domain.Workspace;
 import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -32,9 +28,7 @@ class BoardControllerIntegrationTest extends AbstractIntegrationTest<Board> {
     @Test
     void getByIdFailure() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.getById(URL_TEMPLATE, id);
-
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
@@ -72,7 +66,6 @@ class BoardControllerIntegrationTest extends AbstractIntegrationTest<Board> {
     @Test
     void deleteFailed() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.delete(URL_TEMPLATE, id);
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
@@ -94,7 +87,6 @@ class BoardControllerIntegrationTest extends AbstractIntegrationTest<Board> {
 
     @Test
     void createSuccess() throws Exception {
-
         Board entity = new Board();
         entity.setName("name");
         entity.setDescription("desc");
@@ -112,13 +104,11 @@ class BoardControllerIntegrationTest extends AbstractIntegrationTest<Board> {
 
     @Test
     void createFailed() throws Exception {
-
         Board entity = new Board();
         entity.setName("name");
         entity.setDescription("desc");
         entity.setVisibility(BoardVisibility.PUBLIC);
         MvcResult result = super.create(URL_TEMPLATE, entity);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
@@ -134,7 +124,6 @@ class BoardControllerIntegrationTest extends AbstractIntegrationTest<Board> {
         entity.setDescription("UpdatedDesc");
         entity.setVisibility(BoardVisibility.PRIVATE);
         MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
-
         assertAll(
                 () -> assertNotNull(getValue(result, "$.id")),
                 () -> assertEquals(entity.getName(), getValue(result, "$.name")),

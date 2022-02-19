@@ -2,7 +2,6 @@ package spd.trello.controller;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,15 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.domain.CardList;
 import spd.trello.domain.Comment;
-import spd.trello.domain.Workspace;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -32,9 +27,7 @@ class CommentControllerIntegrationTest extends AbstractIntegrationTest<Comment> 
     @Test
     void getByIdFailure() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.getById(URL_TEMPLATE, id);
-
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
@@ -70,7 +63,6 @@ class CommentControllerIntegrationTest extends AbstractIntegrationTest<Comment> 
     @Test
     void deleteFailed() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.delete(URL_TEMPLATE, id);
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
@@ -92,12 +84,10 @@ class CommentControllerIntegrationTest extends AbstractIntegrationTest<Comment> 
 
     @Test
     void createSuccess() throws Exception {
-
         Comment entity = new Comment();
         entity.setText("text");
         entity.setUserId(UUID.randomUUID());
         entity.setCardId(UUID.randomUUID());
-
         MvcResult result = super.create(URL_TEMPLATE, entity);
         assertAll(
                 () -> assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus()),
@@ -108,12 +98,10 @@ class CommentControllerIntegrationTest extends AbstractIntegrationTest<Comment> 
 
     @Test
     void createFailed() throws Exception {
-
         Comment entity = new Comment();
         entity.setText("text");
         entity.setUserId(UUID.randomUUID());
         MvcResult result = super.create(URL_TEMPLATE, entity);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
@@ -126,7 +114,6 @@ class CommentControllerIntegrationTest extends AbstractIntegrationTest<Comment> 
         super.create(URL_TEMPLATE, entity);
         entity.setText("UpdatedText");
         MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
-
         assertAll(
                 () -> assertNotNull(getValue(result, "$.id")),
                 () -> assertEquals(entity.getText(), getValue(result, "$.text"))

@@ -8,8 +8,12 @@ import java.util.UUID;
 public interface CommonIntegrationTest<E extends Resource> {
 
     MvcResult create(String urlTemplate, E entity) throws Exception;
+
     MvcResult getAll(String urlTemplate) throws Exception;
+
     MvcResult getById(String urlTemplate, UUID id) throws Exception;
+
     MvcResult delete(String urlTemplate, UUID id) throws Exception;
+
     MvcResult update(String urlTemplate, UUID id, E entity) throws Exception;
 }

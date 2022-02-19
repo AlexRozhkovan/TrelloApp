@@ -13,7 +13,6 @@ import spd.trello.domain.parent_classes.Resource;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 public abstract class AbstractIntegrationTest<E extends Resource> implements CommonIntegrationTest<E> {
@@ -32,6 +31,7 @@ public abstract class AbstractIntegrationTest<E extends Resource> implements Com
         return mockMvc.perform(get(URL_TEMPLATE))
                 .andReturn();
     }
+
     @DisplayName("Save")
     public MvcResult create(String URL_TEMPLATE, E entity) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.post(URL_TEMPLATE)
@@ -44,7 +44,7 @@ public abstract class AbstractIntegrationTest<E extends Resource> implements Com
     @DisplayName("Delete")
     public MvcResult delete(String URL_TEMPLATE, UUID id) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.delete(URL_TEMPLATE + "/{id}", id)
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andReturn();
     }
 

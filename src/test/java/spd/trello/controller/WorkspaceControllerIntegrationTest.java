@@ -10,20 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.domain.User;
+import spd.trello.domain.Workspace;
+import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class UserControllerIntegrationTest extends AbstractIntegrationTest<User> {
+class WorkspaceControllerIntegrationTest extends AbstractIntegrationTest<Workspace> {
 
-    String URL_TEMPLATE = "/users";
+    String URL_TEMPLATE = "/workspaces";
 
     @Test
     void getByIdFailure() throws Exception {
@@ -34,10 +34,10 @@ class UserControllerIntegrationTest extends AbstractIntegrationTest<User> {
 
     @Test
     void getByIdSuccess() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setLastName("last");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setName("name");
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
         MvcResult ent = super.create(URL_TEMPLATE, entity);
         UUID id = UUID.fromString(JsonPath.read(ent.getResponse().getContentAsString(), "$.id"));
         MvcResult result = super.getById(URL_TEMPLATE, id);
@@ -46,10 +46,10 @@ class UserControllerIntegrationTest extends AbstractIntegrationTest<User> {
 
     @Test
     void deleteSuccess() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setLastName("last");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setName("name");
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
 
         MvcResult ent = super.create(URL_TEMPLATE, entity);
         UUID id = UUID.fromString(JsonPath.read(ent.getResponse().getContentAsString(), "$.id"));
@@ -85,54 +85,59 @@ class UserControllerIntegrationTest extends AbstractIntegrationTest<User> {
 
     @Test
     void createSuccess() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setLastName("last");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setName("name");
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
         MvcResult result = super.create(URL_TEMPLATE, entity);
         assertAll(
                 () -> assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus()),
                 () -> assertNotNull(getValue(result, "$.id")),
-                () -> assertEquals(entity.getFirstName(), getValue(result, "$.firstName")),
-                () -> assertEquals(entity.getLastName(), getValue(result, "$.lastName")),
-                () -> assertEquals(entity.getEmail(), getValue(result, "$.email"))
+                () -> assertEquals(entity.getName(), getValue(result, "$.name")),
+                () -> assertEquals(entity.getDescription(), getValue(result, "$.description")),
+                () -> assertEquals(entity.getVisibility().toString(), getValue(result, "$.visibility"))
         );
     }
 
     @Test
     void createFailed() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
         MvcResult result = super.create(URL_TEMPLATE, entity);
+
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
     @Test
     void updateSuccess() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setLastName("last");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setName("name");
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
         super.create(URL_TEMPLATE, entity);
-        entity.setFirstName("firstUpdated");
-        entity.setLastName("lastUpdated");
+        entity.setName("UpdatedName");
+        entity.setDescription("UpdatedDesc");
+        entity.setVisibility(WorkspaceVisibility.PRIVATE);
         MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
         assertAll(
                 () -> assertNotNull(getValue(result, "$.id")),
-                () -> assertEquals(entity.getFirstName(), getValue(result, "$.firstName")),
-                () -> assertEquals(entity.getLastName(), getValue(result, "$.lastName")));
+                () -> assertEquals(entity.getName(), getValue(result, "$.name")),
+                () -> assertEquals(entity.getDescription(), getValue(result, "$.description")),
+                () -> assertEquals(entity.getVisibility().toString(), getValue(result, "$.visibility"))
+        );
     }
 
     @Test
     void updateFailed() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setLastName("last");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setName("name");
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
         super.create(URL_TEMPLATE, entity);
-        entity.setFirstName(null);
-        entity.setLastName("lastUpdated");
+        entity.setName(null);
+        entity.setDescription("UpdatedDesc");
+        entity.setVisibility(WorkspaceVisibility.PRIVATE);
         MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
@@ -140,13 +145,14 @@ class UserControllerIntegrationTest extends AbstractIntegrationTest<User> {
 
     @Test
     void updateNotFound() throws Exception {
-        User entity = new User();
-        entity.setFirstName("first");
-        entity.setLastName("last");
-        entity.setEmail("email");
+        Workspace entity = new Workspace();
+        entity.setName("name");
+        entity.setDescription("desc");
+        entity.setVisibility(WorkspaceVisibility.PUBLIC);
         super.create(URL_TEMPLATE, entity);
-        entity.setFirstName("firstUpdated");
-        entity.setLastName("lastUpdated");
+        entity.setName(null);
+        entity.setDescription("UpdatedDesc");
+        entity.setVisibility(WorkspaceVisibility.PRIVATE);
         MvcResult result = super.update("/wrong", entity.getId(), entity);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());

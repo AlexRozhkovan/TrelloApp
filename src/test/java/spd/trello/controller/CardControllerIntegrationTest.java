@@ -11,15 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.domain.*;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
+import spd.trello.domain.Card;
+import spd.trello.domain.Reminder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -32,9 +29,7 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
     @Test
     void getByIdFailure() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.getById(URL_TEMPLATE, id);
-
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
@@ -74,7 +69,6 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
     @Test
     void deleteFailed() throws Exception {
         UUID id = UUID.randomUUID();
-
         MvcResult result = super.delete(URL_TEMPLATE, id);
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
@@ -95,7 +89,6 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
 
     @Test
     void createSuccess() throws Exception {
-
         Card entity = new Card();
         Reminder reminder = new Reminder();
         entity.setName("name");
@@ -113,14 +106,12 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
 
     @Test
     void createFailed() throws Exception {
-
         Card entity = new Card();
         Reminder reminder = new Reminder();
         entity.setName("name");
         entity.setDescription("desc");
         entity.setReminder(reminder);
         MvcResult result = super.create(URL_TEMPLATE, entity);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
@@ -138,7 +129,6 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
         entity.setDescription("UpdatedName");
         entity.setReminder(entity.getReminder());
         MvcResult result = super.update(URL_TEMPLATE, entity.getId(), entity);
-
         assertAll(
                 () -> assertNotNull(getValue(result, "$.id")),
                 () -> assertEquals(entity.getName(), getValue(result, "$.name")),
@@ -162,7 +152,7 @@ class CardControllerIntegrationTest extends AbstractIntegrationTest<Card> {
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
-//TODO
+
     @Test
     void updateNotFound() throws Exception {
         Card entity = new Card();
