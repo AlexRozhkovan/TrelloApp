@@ -3,24 +3,23 @@ package spd.trello.controller;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.Attachment;
+import spd.trello.repository.AttachmentRepository;
+import spd.trello.service.AttachmentService;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attachment> {
+
+    @Autowired
+    AttachmentRepository repo;
+    @Autowired
+    AttachmentService service;
 
     String URL_TEMPLATE = "/attachments";
 
@@ -56,6 +55,21 @@ class AttachmentControllerIntegrationTest extends AbstractIntegrationTest<Attach
                 () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus()),
                 () -> assertEquals(HttpStatus.NOT_FOUND.value(), super.getById(URL_TEMPLATE, id).getResponse().getStatus())
         );
+    }
+
+    @Test
+    void deleteSuccess1() throws Exception {
+        Attachment entity = new Attachment();
+        entity.setName("name");
+        entity.setLink("link");
+        Attachment newEnt = repo.save(entity);
+
+        MvcResult result = super.delete(URL_TEMPLATE, newEnt.getId());
+        assertAll(
+                () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus()),
+                () -> assertEquals(HttpStatus.NOT_FOUND.value(), super.getById(URL_TEMPLATE, newEnt.getId()).getResponse().getStatus())
+        );
+        Assertions.assertTrue(repo.findById(newEnt.getId()).isEmpty());
     }
 
     @Test
