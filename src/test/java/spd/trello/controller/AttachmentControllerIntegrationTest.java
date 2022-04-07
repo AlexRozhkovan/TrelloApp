@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.Attachment;
 import spd.trello.repository.AttachmentRepository;
-import spd.trello.service.AttachmentService;
+import spd.trello.service.attachment.AttachmentService;
 
 import java.util.UUID;
 

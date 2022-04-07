@@ -1,16 +1,46 @@
 package spd.trello.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.service.AttachmentService;
+import spd.trello.service.attachment.AttachmentService;
+
+import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/attachments", produces = MediaType.APPLICATION_JSON_VALUE)
-public class AttachmentController extends AbstractController<Attachment, AttachmentService> {
+@RequestMapping("/attachments")
+public class AttachmentController {
 
+    private AttachmentService service;
+
+    @Autowired
     public AttachmentController(AttachmentService service) {
-        super(service);
+        this.service = service;
+    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> upload(@RequestParam("file") MultipartFile file) {
+        try {
+            Attachment attachment = service.save(file);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getName() + "\"")
+                    .contentType(MediaType.valueOf(attachment.getContext()))
+                    .body(attachment.getFile());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Could not upload the file! " + e);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<byte[]> getAttachment(@PathVariable UUID id) {
+        Attachment attachment = service.readById(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getName() + "\"")
+                .contentType(MediaType.valueOf(attachment.getContext()))
+                .body(attachment.getFile());
     }
 }

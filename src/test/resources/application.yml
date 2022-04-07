@@ -39,3 +39,5 @@ server:
   error:
     include-message: always
     include-exception: true
+
+location: src/main/resources/downloads
