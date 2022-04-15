@@ -1,15 +1,16 @@
 package spd.trello.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import spd.trello.domain.parent_classes.Resource;
-import spd.trello.exception.InvalidRequestException;
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository.IRepository;
+import spd.trello.repository.CommonRepository;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-public abstract class AbstractService<E extends Resource, R extends IRepository<E>>
-        implements CommonService<E> {
+public abstract class AbstractService<E extends Resource, R extends CommonRepository<E>> implements CommonService<E> {
+
     R repository;
 
     public AbstractService(R repository) {
@@ -17,40 +18,32 @@ public abstract class AbstractService<E extends Resource, R extends IRepository<
     }
 
     @Override
-    public E save(E entity) {
-        try {
-            return repository.save(entity);
-        } catch (Exception e) {
-            throw new InvalidRequestException();
-        }
+    public E create(E entity) {
+        entity.setCreatedDate(LocalDateTime.now());
+        return repository.save(entity);
     }
 
     @Override
     public E update(E entity) {
-        try {
-            return repository.save(entity);
-        } catch (Exception e) {
-            throw new NotFoundException();
-        }
+        readById(entity.getId());
+        entity.setUpdatedDate(LocalDateTime.now());
+        return repository.save(entity);
     }
 
     @Override
-    public void deleteById(UUID id) {
-        try {
-            repository.deleteById(id);
-        } catch (Exception e) {
-            throw new NotFoundException();
-        }
-    }
-
-    @Override
-    public E getById(UUID id) {
+    public E readById(UUID id) {
         return repository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public List<E> getAll() {
-        return repository.findAll();
+    public E delete(UUID id) {
+        E result = readById(id);
+        repository.deleteById(id);
+        return result;
     }
 
+    @Override
+    public Page<E> readAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 }

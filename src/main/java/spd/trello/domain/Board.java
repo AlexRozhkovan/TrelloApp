@@ -1,39 +1,41 @@
 package spd.trello.domain;
 
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.UniqueElements;
 import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.domain.parent_classes.Resource;
+import spd.trello.domain.parent_classes.MainArchived;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
-@Generated
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "boards")
-public class Board extends Resource {
-
+public class Board extends MainArchived {
     private String name;
     private String description;
-    private Boolean archived = Boolean.FALSE;
-    private UUID workspaceId;
 
-    @Enumerated(EnumType.STRING)
-    private BoardVisibility visibility = BoardVisibility.PRIVATE;
+    @Column(name = "workspace_id")
+    private UUID workspaceId;
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
-            name = "boards_members",
-            joinColumns = @JoinColumn(name = "board_id")
-    )
+            name = "board_member",
+            joinColumns = @JoinColumn(name = "board_id"))
     @Column(name = "member_id")
-    private Set<UUID> memberIds = new HashSet<>();
+    @UniqueElements(message = "member cannot be added twice")
+    @NotEmpty(message = "board must contain at least one member")
+    private List<UUID> members = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private BoardVisibility visibility = BoardVisibility.PUBLIC;
+
 }

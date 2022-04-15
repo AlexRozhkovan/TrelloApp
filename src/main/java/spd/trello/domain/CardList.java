@@ -1,22 +1,18 @@
 package spd.trello.domain;
 
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
-import spd.trello.domain.parent_classes.Resource;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import spd.trello.domain.parent_classes.MainArchived;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.UUID;
 
-@Getter
-@Setter
-@Generated
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "card_lists")
-public class CardList extends Resource {
-
+@Table(name = "cardlists")
+public class CardList extends MainArchived {
     private String name;
-    private Boolean archived = Boolean.FALSE;
     private UUID boardId;
 }

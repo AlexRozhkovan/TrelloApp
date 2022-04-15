@@ -1,23 +1,35 @@
 package spd.trello.domain;
 
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import spd.trello.annotation.RightReminder;
 import spd.trello.domain.parent_classes.Domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@Generated
-@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "reminders")
+@Entity
+@RightReminder
 public class Reminder extends Domain {
 
+    @Column(name = "starts")
+    @NotNull(message = "Field \"start\" cannot be null")
+    @FutureOrPresent
     private LocalDateTime start;
-    private LocalDateTime finish;
+    @Column(name = "ends")
+    @Future
+    private LocalDateTime end;
+    @Future
     private LocalDateTime remindOn;
-    private Boolean active = Boolean.FALSE;
+    private Boolean alive;
+
 }
+

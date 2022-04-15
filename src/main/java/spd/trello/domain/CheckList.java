@@ -1,24 +1,28 @@
 package spd.trello.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
-import spd.trello.domain.parent_classes.Domain;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Generated
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "check_lists")
-public class CheckList extends Domain {
-
+public class CheckList extends Resource {
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            targetEntity = CheckableItem.class,
+            mappedBy = "checkList")
+    @JsonManagedReference
+    @JsonIgnoreProperties(value = "checkList", allowSetters = true)
     private List<CheckableItem> items = new ArrayList<>();
 }

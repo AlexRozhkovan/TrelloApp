@@ -1,19 +1,14 @@
 package spd.trello.domain.parent_classes;
 
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
-@Getter
-@Setter
-@Generated
+@Data
 @MappedSuperclass
-public abstract class Domain {
-
+public class Domain {
     @Id
-    private UUID id = UUID.randomUUID();
+    protected UUID id = UUID.randomUUID();
 }

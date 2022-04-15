@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 
 public class ObjectMapperConf {
     @Bean
-    ObjectMapper obj(){
+    ObjectMapper obj() {
         return new ObjectMapper().findAndRegisterModules();
     }
 

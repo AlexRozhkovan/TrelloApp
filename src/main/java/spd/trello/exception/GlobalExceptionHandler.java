@@ -1,41 +1,46 @@
 package spd.trello.exception;
 
-import lombok.Generated;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import spd.trello.domain.parent_classes.Domain;
 
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
-@Generated
-public class GlobalExceptionHandler
-        extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler<T extends Domain> {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleResourceNotFoundException(RuntimeException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "No such resource!");
-
-        return handleExceptionInternal(ex, body,
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    @ExceptionHandler(value = {InvalidRequestException.class, NotFoundException.class})
+    protected ResponseEntity<Object> handle(RuntimeException ex, WebRequest request) {
+        String responseBody = ex.getMessage();
+        return new ResponseEntity(responseBody, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity handleInvalidRequestException(RuntimeException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Invalid Request");
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        T target = (T) ex.getTarget();
+        String simpleName = target.getClass().getSimpleName();
 
-        return handleExceptionInternal(ex, body,
-                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        List details = ex.getBindingResult().getAllErrors().stream()
+                .map(fieldError -> fieldError.getDefaultMessage())
+                .collect(Collectors.toList());
+        ErrorResponse error = new ErrorResponse(simpleName + " not valid", details);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    protected ResponseEntity<Object> onConstraintValidationException(
+            ConstraintViolationException e) {
+        List<String> details = e.getConstraintViolations().stream().map(er -> er.getMessage()).collect(Collectors.toList());
+        ErrorResponse error = new ErrorResponse("Error of validation", details);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,35 +1,31 @@
 package spd.trello.domain.parent_classes;
 
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
-
-@Getter
-@Setter
-@Generated
+@Data
 @MappedSuperclass
-public abstract class Resource extends Domain {
-
-    @CreatedBy
+@EntityListeners(AuditingEntityListener.class)
+public class Resource extends Domain {
     @Column(updatable = false)
-    private String createdBy = "user";
-
-    @LastModifiedBy
+    private String createdBy;
     private String updatedBy;
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdDate = LocalDateTime.now();
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updatedDate;
 }
