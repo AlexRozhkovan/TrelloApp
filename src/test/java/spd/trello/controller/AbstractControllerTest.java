@@ -1,0 +1,76 @@
+package spd.trello.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import spd.trello.domain.parent_classes.Resource;
+
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+
+public class AbstractControllerTest<E extends Resource> {
+
+    @Autowired
+    protected ObjectMapper objectMapper;
+
+    @Autowired
+    protected MockMvc mvc;
+
+    public MvcResult create(String uri, E entity) throws Exception {
+        String content = mapToJson(entity);
+        return mvc.perform(post(uri)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andReturn();
+    }
+
+    public MvcResult update(String uri, E entity) throws Exception {
+        String content = mapToJson(entity);
+        return mvc.perform(put(uri + "/{id}", entity.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andReturn();
+    }
+
+    public MvcResult readById(String uri, UUID id) throws Exception {
+        return mvc.perform(MockMvcRequestBuilders.get(uri + "/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+    }
+
+    public MvcResult getAll(String uri) throws Exception {
+        return mvc.perform(get(uri + "?page=0"))
+                .andReturn();
+    }
+
+    public MvcResult delete(String uri, UUID id) throws Exception {
+        return mvc.perform(MockMvcRequestBuilders.delete(uri + "/{id}", id))
+                .andReturn();
+    }
+
+    protected String mapToJson(Object obj) throws JsonProcessingException {
+
+        return objectMapper.writeValueAsString(obj);
+    }
+
+    protected Object getValue(MvcResult mvcResult, String jsonPath) throws UnsupportedEncodingException {
+        if (jsonPath.matches("Date")) {
+            Object read = JsonPath.read(mvcResult.getResponse().getContentAsString(), jsonPath);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return LocalDateTime.parse(read.toString(), formatter);
+        }
+        return JsonPath.read(mvcResult.getResponse().getContentAsString(), jsonPath);
+    }
+}
