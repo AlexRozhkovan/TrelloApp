@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.configuration.StorageLocation;
 import spd.trello.domain.Attachment;
+import spd.trello.exception.NotFoundException;
 
 
 import java.io.IOException;
@@ -32,6 +33,12 @@ public class AttachmentService {
         if (storage.getLocation().equals("db"))
             return dbService.readById(id);
         return localService.readById(id);
+    }
 
+
+    public void deleteById(UUID id) {
+        if (storage.getLocation().equals("db"))
+            dbService.deleteById(id);
+        localService.deleteById(id);
     }
 }

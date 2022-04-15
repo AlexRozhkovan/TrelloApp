@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.configuration.StorageLocation;
 import spd.trello.domain.Attachment;
+import spd.trello.exception.NotFoundException;
 import spd.trello.repository.AttachmentRepository;
 
 import javax.annotation.PostConstruct;
@@ -78,5 +79,13 @@ public class AttachmentLocalService extends AbstractAttachmentService {
             throw new IllegalArgumentException(ex);
         }
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public void deleteById(UUID id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException();
+        }
     }
 }

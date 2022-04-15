@@ -5,9 +5,10 @@ import spd.trello.domain.CardList;
 import spd.trello.repository.CardListRepository;
 
 @Service
-public class CardListService extends AbstractService<CardList, CardListRepository> {
+public class CardListService extends ArchivedResourceService<CardList, CardListRepository> {
 
     public CardListService(CardListRepository repository) {
         super(repository);
     }
+
 }

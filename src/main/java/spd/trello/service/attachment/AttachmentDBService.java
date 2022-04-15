@@ -3,9 +3,11 @@ package spd.trello.service.attachment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
+import spd.trello.exception.NotFoundException;
 import spd.trello.repository.AttachmentRepository;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class AttachmentDBService extends AbstractAttachmentService{
@@ -22,6 +24,14 @@ public class AttachmentDBService extends AbstractAttachmentService{
             return repository.save(attachment);
         } catch (IOException e) {
             throw new IllegalArgumentException("File not added to db", e);
+        }
+    }
+
+    public void deleteById(UUID id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException();
         }
     }
 

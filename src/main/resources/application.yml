@@ -1,5 +1,6 @@
 # Spring Boot configuration
-location: src/main/resources/downloads
+location: src/main/resources/files
+#location: db
 spring:
   # Database
   datasource:

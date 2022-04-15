@@ -4,6 +4,5 @@ import org.springframework.stereotype.Repository;
 import spd.trello.domain.Member;
 
 @Repository
-public interface MemberRepository extends IRepository<Member> {
-
+public interface MemberRepository extends CommonRepository<Member> {
 }
