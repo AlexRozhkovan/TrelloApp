@@ -3,7 +3,6 @@ package spd.trello.service.attachment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.exception.NotFoundException;
 import spd.trello.repository.AttachmentRepository;
 
 import java.io.IOException;
@@ -17,8 +16,8 @@ public class AttachmentDBService extends AbstractAttachmentService{
     }
 
     @Override
-    public Attachment load(MultipartFile file) {
-        Attachment attachment = convert(file);
+    public Attachment load(UUID cardId, MultipartFile file) {
+        Attachment attachment = convert(cardId, file);
         try {
             attachment.setFile(file.getBytes());
             return repository.save(attachment);
@@ -26,13 +25,4 @@ public class AttachmentDBService extends AbstractAttachmentService{
             throw new IllegalArgumentException("File not added to db", e);
         }
     }
-
-    public void deleteById(UUID id) {
-        try {
-            repository.deleteById(id);
-        } catch (Exception e) {
-            throw new NotFoundException();
-        }
-    }
-
 }

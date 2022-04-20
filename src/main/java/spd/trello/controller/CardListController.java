@@ -6,8 +6,9 @@ import spd.trello.domain.CardList;
 import spd.trello.service.CardListService;
 
 @RestController
-@RequestMapping("/cardlists")
+@RequestMapping("/card_lists")
 public class CardListController extends AbstractController<CardList, CardListService> {
+
     public CardListController(CardListService service) {
         super(service);
     }

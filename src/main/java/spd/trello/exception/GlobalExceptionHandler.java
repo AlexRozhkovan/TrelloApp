@@ -16,31 +16,38 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler<T extends Domain> {
 
-    @ExceptionHandler(value = {InvalidRequestException.class, NotFoundException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class})
     protected ResponseEntity<Object> handle(RuntimeException ex, WebRequest request) {
         String responseBody = ex.getMessage();
         return new ResponseEntity(responseBody, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        T target = (T) ex.getTarget();
-        String simpleName = target.getClass().getSimpleName();
-
-        List details = ex.getBindingResult().getAllErrors().stream()
-                .map(fieldError -> fieldError.getDefaultMessage())
-                .collect(Collectors.toList());
-        ErrorResponse error = new ErrorResponse(simpleName + " not valid", details);
-        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(value = {NotFoundException.class})
+    protected ResponseEntity<Object> handleEntityNotFound(RuntimeException ex, WebRequest request) {
+        String responseBody = ex.getMessage();
+        return new ResponseEntity(responseBody, HttpStatus.NOT_FOUND);
     }
+
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     protected ResponseEntity<Object> onConstraintValidationException(
             ConstraintViolationException e) {
         List<String> details = e.getConstraintViolations().stream().map(er -> er.getMessage()).collect(Collectors.toList());
-        ErrorResponse error = new ErrorResponse("Error of validation", details);
+        ErrorResponse error = new ErrorResponse("Validation error", details);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        T target = (T) ex.getTarget();
+        String name = target.getClass().getSimpleName();
+
+        List details = ex.getBindingResult().getAllErrors().stream()
+                .map(fieldError -> fieldError.getDefaultMessage())
+                .collect(Collectors.toList());
+        ErrorResponse error = new ErrorResponse(name + " not valid", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,6 +1,8 @@
 package spd.trello.domain.parent_classes;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,16 +18,24 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Resource extends Domain {
-    @Column(updatable = false)
+
+    @Column(name = "created_by",
+            updatable = false)
     private String createdBy;
+
+    @Column(name = "updated_by")
     private String updatedBy;
 
+    @Column(name = "created_date",
+            updatable = false)
     @CreatedDate
-    @Column(updatable = false)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdDate;
 
+    @Column(name = "updated_date")
     @LastModifiedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedDate;
 }

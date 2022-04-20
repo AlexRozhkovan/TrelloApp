@@ -22,7 +22,7 @@ public class ArchivedResourceService<E extends MainArchived, R extends CommonRep
 
     private E checkArchivedResource(E entity, E foundEntity) {
         if (foundEntity.getArchived() && entity.getArchived())
-            throw new NotFoundException("Archived " + entity.getClass().getSimpleName() + " can not be updated");
+            throw new NotFoundException("Archived " + entity.getClass().getSimpleName() + " can't be updated");
         else if ((!foundEntity.getArchived() && entity.getArchived())
                 || (foundEntity.getArchived() && !entity.getArchived())) {
             foundEntity.setArchived(entity.getArchived());

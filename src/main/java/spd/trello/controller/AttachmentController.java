@@ -17,21 +17,23 @@ public class AttachmentController {
 
     private AttachmentService service;
 
-    @Autowired
     public AttachmentController(AttachmentService service) {
         this.service = service;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> upload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<byte[]> upload(@RequestParam("id") UUID id,
+                                         @RequestParam("file") MultipartFile file) {
         try {
-            Attachment attachment = service.save(file);
+            Attachment attachment = service.save(id, file);
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getName() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION,  " attachment; id = \"" + attachment.getId()
+                            + "\" filename = \"" + attachment.getName()
+                            + "\", foreign key = \"" + attachment.getCardId() + "\"")
                     .contentType(MediaType.valueOf(attachment.getContext()))
                     .body(attachment.getFile());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Could not upload the file! " + e);
+            throw new IllegalArgumentException("Couldn't upload the file!" + e);
         }
     }
 
@@ -39,7 +41,9 @@ public class AttachmentController {
     public ResponseEntity<byte[]> getAttachment(@PathVariable UUID id) {
         Attachment attachment = service.readById(id);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, " attachment id = \"" + attachment.getId()
+                        + "\" filename = \"" + attachment.getName()
+                        + "\", foreign key = \"" + attachment.getCardId() + "\"")
                 .contentType(MediaType.valueOf(attachment.getContext()))
                 .body(attachment.getFile());
     }

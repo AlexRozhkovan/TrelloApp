@@ -2,14 +2,15 @@ package spd.trello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
 @SpringBootApplication
+@EnableJpaRepositories
+
 public class TrelloApplication {
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args){
         SpringApplication.run(TrelloApplication.class, args);
     }
 }

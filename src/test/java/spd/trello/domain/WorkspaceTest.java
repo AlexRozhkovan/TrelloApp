@@ -30,7 +30,7 @@ public class WorkspaceTest extends BaseTest {
     @BeforeEach
     public void createTestSpace() {
         workspace.setId(UUID.fromString("1ee887d3-9065-421d-93bd-7ad5f30c3bd9"));
-        workspace.setWorkspaceMembers(Set.of(member.getId()));
+        workspace.setMembers(List.of(member.getId()));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class WorkspaceTest extends BaseTest {
                 () -> assertNotNull(actual.getUpdatedDate()),
                 () -> assertEquals(workspace.getVisibility(), actual.getVisibility()),
                 () -> assertEquals(workspace.getUpdatedBy(), actual.getUpdatedBy()),
-                () -> assertEquals(1, actual.getWorkspaceMembers().size())
+                () -> assertEquals(1, actual.getMembers().size())
         );
 
         verify(repository, times(1)).findById(any());

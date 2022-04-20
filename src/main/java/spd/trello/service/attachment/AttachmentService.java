@@ -2,9 +2,8 @@ package spd.trello.service.attachment;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import spd.trello.configuration.StorageLocation;
+import spd.trello.configuration.StorageConf;
 import spd.trello.domain.Attachment;
-import spd.trello.exception.NotFoundException;
 
 
 import java.io.IOException;
@@ -15,18 +14,18 @@ public class AttachmentService {
 
     private AttachmentDBService dbService;
     private AttachmentLocalService localService;
-    private StorageLocation storage;
+    private StorageConf storage;
 
-    public AttachmentService(StorageLocation storage, AttachmentDBService dbService, AttachmentLocalService localService) {
+    public AttachmentService(StorageConf storage, AttachmentDBService dbService, AttachmentLocalService localService) {
         this.storage = storage;
         this.dbService = dbService;
         this.localService = localService;
     }
 
-    public Attachment save(MultipartFile file) throws IOException {
+    public Attachment save(UUID cardId, MultipartFile file) throws IOException {
         if (storage.getLocation().equals("db"))
-            return dbService.load(file);
-        return localService.load(file);
+            return dbService.load(cardId, file);
+        return localService.load(cardId, file);
     }
 
     public Attachment readById(UUID id) {

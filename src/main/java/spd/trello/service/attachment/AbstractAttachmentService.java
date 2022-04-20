@@ -2,13 +2,13 @@ package spd.trello.service.attachment;
 
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
+import spd.trello.exception.NotFoundException;
 import spd.trello.repository.AttachmentRepository;
 
-import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class AbstractAttachmentService implements CommonAttachmentService{
+public abstract class AbstractAttachmentService implements CommonAttachmentService {
 
     AttachmentRepository repository;
 
@@ -16,8 +16,9 @@ public abstract class AbstractAttachmentService implements CommonAttachmentServi
         this.repository = repository;
     }
 
-    public Attachment convert(MultipartFile file) {
+    public Attachment convert(UUID cardId, MultipartFile file) {
         Attachment attachment = new Attachment();
+        attachment.setCardId(cardId);
         attachment.setName(file.getOriginalFilename());
         attachment.setContext(file.getContentType());
         return attachment;
@@ -25,10 +26,15 @@ public abstract class AbstractAttachmentService implements CommonAttachmentServi
 
     @Override
     public Attachment readById(UUID id) {
+            return Optional.ofNullable(repository.findById(id).orElseThrow(NotFoundException::new)).get();
+    }
+
+    @Override
+    public void deleteById(UUID id) {
         try {
-            return Optional.ofNullable(repository.findById(id).orElseThrow(FileNotFoundException::new)).get();
-        } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException(e);
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException();
         }
     }
 }

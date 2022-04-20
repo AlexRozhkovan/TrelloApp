@@ -1,5 +1,9 @@
 package spd.trello.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import spd.trello.annotation.RightReminder;
@@ -21,15 +25,22 @@ import java.time.LocalDateTime;
 public class Reminder extends Domain {
 
     @Column(name = "starts")
-    @NotNull(message = "Field \"start\" cannot be null")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @NotNull(message = "\"start\" can't be null")
     @FutureOrPresent
     private LocalDateTime start;
+
     @Column(name = "ends")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Future
     private LocalDateTime end;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Future
     private LocalDateTime remindOn;
-    private Boolean alive;
 
+    private Boolean active;
 }
-

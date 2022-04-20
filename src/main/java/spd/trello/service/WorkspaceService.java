@@ -6,6 +6,7 @@ import spd.trello.repository.WorkspaceRepository;
 
 @Service
 public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository> {
+
     public WorkspaceService(WorkspaceRepository repository) {
         super(repository);
     }

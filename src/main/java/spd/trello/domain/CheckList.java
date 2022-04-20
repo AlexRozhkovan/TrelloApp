@@ -13,8 +13,10 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "check_lists")
+@Table(name = "checklists")
 public class CheckList extends Resource {
+
+    @Column(name = "name")
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER,

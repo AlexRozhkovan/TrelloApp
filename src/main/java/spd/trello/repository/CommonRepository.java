@@ -8,8 +8,5 @@ import spd.trello.domain.parent_classes.Domain;
 import java.util.UUID;
 
 @NoRepositoryBean
-public interface CommonRepository<E extends Domain> extends JpaRepository<E, UUID>,
-        JpaSpecificationExecutor<E> {
-    void deleteById(UUID id);
-
+public interface CommonRepository<E extends Domain> extends JpaRepository<E, UUID>{
 }

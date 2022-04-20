@@ -10,16 +10,17 @@ import spd.trello.domain.parent_classes.MainArchived;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "boards")
 public class Board extends MainArchived {
+
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
 
     @Column(name = "workspace_id")
@@ -31,11 +32,12 @@ public class Board extends MainArchived {
             name = "board_member",
             joinColumns = @JoinColumn(name = "board_id"))
     @Column(name = "member_id")
-    @UniqueElements(message = "member cannot be added twice")
-    @NotEmpty(message = "board must contain at least one member")
+    @UniqueElements(message = "member already exist")
+    @NotEmpty(message = "Add minimum 1 member")
     private List<UUID> members = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "visibility")
     private BoardVisibility visibility = BoardVisibility.PUBLIC;
 
 }

@@ -10,5 +10,4 @@ public class CheckListService extends AbstractService<CheckList, CheckListReposi
     public CheckListService(CheckListRepository repository) {
         super(repository);
     }
-
 }

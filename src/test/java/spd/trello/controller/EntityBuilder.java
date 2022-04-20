@@ -6,11 +6,9 @@ import spd.trello.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class EntityBuilder {
-
 
     static User buildUser() {
         User user = new User();
@@ -45,7 +43,7 @@ public class EntityBuilder {
         Workspace workspace = new Workspace();
         workspace.setName("test");
         workspace.setDescription("test desc");
-        workspace.setWorkspaceMembers(Set.of(UUID.fromString("7ee897d3-9065-421d-93bd-7ad5f30c5bd4")));
+        workspace.setMembers(List.of(UUID.fromString("7ee897d3-9065-471d-53bd-7ad5f30c5bd4")));
         workspace.setCreatedDate(LocalDateTime.now());
         workspace.setCreatedBy("test");
         return workspace;
@@ -61,6 +59,7 @@ public class EntityBuilder {
         board.setName("board test");
         board.setDescription("desc test");
         board.setCreatedDate(LocalDateTime.now());
+        board.setMembers(List.of(UUID.fromString("7ee897d3-9065-421d-93bd-7ad5f30c5bd4")));
         board.setCreatedBy("test");
         return board;
     }
@@ -87,17 +86,28 @@ public class EntityBuilder {
         Card card = new Card();
         card.setCardListId(UUID.fromString("7ee897d3-9065-885d-93bd-4ad6f30c5fd4"));
         card.setName("test");
-        card.setArchived(true);
+        card.setArchived(false);
         card.setDescription("card desc");
         card.setCreatedDate(LocalDateTime.now());
         card.setCreatedBy("test");
+        card.setMembers(List.of(UUID.fromString("7ee897d3-9065-421d-93bd-7ad5f30c5bd4")));
         return card;
+    }
+
+    static Card getCard(CardRepository repository) {
+        return repository.save(buildCard());
+    }
+
+    static Card getCard(CardRepository repository, boolean flag){
+        Card card = buildCard();
+        card.setArchived(flag);
+        return repository.save(card);
     }
 
     static CheckList buildCheckList() {
         CheckList checkList = new CheckList();
         CheckableItem check = new CheckableItem();
-        check.setCheck(true);
+        check.setChecked(true);
         check.setName("test check");
         check.setCheckList(checkList);
 
@@ -107,8 +117,12 @@ public class EntityBuilder {
         return checkList;
     }
 
-    static Card getCard(CardRepository repository) {
-        return repository.save(buildCard());
+    static Reminder buildReminder(){
+        Reminder reminder = new Reminder();
+        reminder.setStart(LocalDateTime.now().plusSeconds(15));
+        reminder.setRemindOn(LocalDateTime.now().plusMinutes(5));
+        reminder.setEnd(LocalDateTime.now().plusHours(1));
+        return reminder;
     }
 
     static Card getCardWithCheckList(CardRepository repository) {

@@ -11,8 +11,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.TrelloApplication;
 import spd.trello.domain.Workspace;
+import spd.trello.exception.ErrorResponse;
 import spd.trello.repository.WorkspaceRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,12 +47,31 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
     public void successCreate() throws Exception {
         Workspace expected = EntityBuilder.buildWorkspace();
         MvcResult result = super.create(URL, expected);
+        Workspace actual = mapFromJson(result.getResponse().getContentAsString(), Workspace.class);
 
         assertAll(
-                () -> assertNotNull(getValue(result, "$.createdDate")),
-                () -> assertNotNull(getValue(result, "$.createdBy")),
-                () -> assertEquals(expected.getName(), getValue(result, "$.name")),
-                () -> assertEquals(expected.getDescription(), getValue(result, "$.description"))
+                () -> assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus()),
+                () -> assertNotNull(actual.getCreatedBy()),
+                () -> assertNotNull(actual.getCreatedDate()),
+                () -> assertEquals(expected.getName(), actual.getName()),
+                () -> assertEquals(expected.getDescription(), actual.getDescription()),
+                () -> assertFalse(actual.getMembers().isEmpty())
+        );
+    }
+
+    @Test
+    @DisplayName("createWithoutMembers")
+    public void failCreate() throws Exception {
+        Workspace unexpected = EntityBuilder.buildWorkspace();
+        unexpected.setMembers(new ArrayList<>());
+
+        MvcResult result = super.create(URL, unexpected);
+        ErrorResponse actual = mapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus()),
+                () -> assertEquals("Workspace not valid", actual.getMessage()),
+                () -> assertFalse(actual.getDetails().isEmpty())
         );
     }
 
@@ -61,12 +83,18 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
         expected.setDescription("test2");
 
         MvcResult result = super.update(URL, expected);
+        Workspace actual = mapFromJson(result.getResponse().getContentAsString(), Workspace.class);
 
         assertAll(
-                () -> assertNotNull(getValue(result, "$.updatedDate")),
-                () -> assertNotNull(getValue(result, "$.updatedBy")),
-                () -> assertEquals(expected.getName(), getValue(result, "$.name")),
-                () -> assertEquals(expected.getDescription(), getValue(result, "$.description"))
+                () -> assertNotNull(actual.getCreatedBy()),
+                () -> assertNotNull(actual.getCreatedDate()),
+                () -> assertNotNull(actual.getUpdatedDate()),
+                () -> assertNotNull(actual.getUpdatedBy()),
+                () -> assertEquals(expected.getCreatedBy(), actual.getCreatedBy()),
+                () -> assertEquals(expected.getCreatedDate(), actual.getCreatedDate()),
+                () -> assertEquals(expected.getName(), actual.getName()),
+                () -> assertEquals(expected.getDescription(), actual.getDescription()),
+                () -> assertFalse(actual.getMembers().isEmpty())
         );
     }
 
@@ -77,11 +105,13 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
         expected.setId(UUID.fromString("7ee897d3-9065-471d-53bd-7ad5f30c5bd4"));
 
         MvcResult result = super.readById(URL, expected.getId());
-        assertAll(
-                () -> assertNotNull(getValue(result, "$.createdDate")),
-                () -> assertNotNull(getValue(result, "$.createdBy"))
-        );
+        Workspace actual = mapFromJson(result.getResponse().getContentAsString(), Workspace.class);
 
+        assertAll(
+                () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus()),
+                () -> assertNotNull(actual.getCreatedBy()),
+                () -> assertNotNull(actual.getCreatedDate())
+        );
     }
 
     @Test
@@ -95,13 +125,17 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
     @DisplayName("delete")
     public void successDelete() throws Exception {
         Workspace expected = EntityBuilder.getWorkspace(repository);
+
         MvcResult result = super.delete(URL, expected.getId());
+        Workspace actual = mapFromJson(result.getResponse().getContentAsString(), Workspace.class);
 
         assertAll(
-                () -> assertNotNull(getValue(result, "$.createdDate")),
-                () -> assertNotNull(getValue(result, "$.createdBy")),
-                () -> assertEquals(expected.getName(), getValue(result, "$.name")),
-                () -> assertEquals(expected.getDescription(), getValue(result, "$.description"))
+                () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus()),
+                () -> assertNotNull(actual.getCreatedBy()),
+                () -> assertNotNull(actual.getCreatedDate()),
+                () -> assertEquals(expected.getName(), actual.getName()),
+                () -> assertEquals(expected.getDescription(), actual.getDescription()),
+                () -> assertFalse(actual.getMembers().isEmpty())
         );
     }
 

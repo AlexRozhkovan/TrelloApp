@@ -40,7 +40,7 @@ public class CardTest extends BaseTest {
                 () -> assertNotNull(actual.getCreatedDate()),
                 () -> assertEquals(card.getCreatedBy(), actual.getCreatedBy()),
                 () -> assertEquals(card.getArchived(), actual.getArchived()),
-                () -> assertEquals(card.getAssignedMembers().size(), actual.getAssignedMembers().size()),
+                () -> assertEquals(card.getMembers().size(), actual.getMembers().size()),
                 () -> assertEquals(card.getName(), actual.getName())
         );
 
@@ -75,7 +75,7 @@ public class CardTest extends BaseTest {
         when(repository.save(card)).thenReturn(card);
 
         Reminder reminder = new Reminder();
-        reminder.setAlive(true);
+        reminder.setActive(true);
         reminder.setStart(LocalDateTime.now());
         card.setReminder(reminder);
         Card actual = service.update(card);
@@ -84,7 +84,7 @@ public class CardTest extends BaseTest {
                 () -> assertNotNull(actual.getUpdatedDate()),
                 () -> assertNotNull(actual.getReminder()),
                 () -> assertNotNull(actual.getReminder().getStart()),
-                () -> assertEquals(card.getReminder().getAlive(), actual.getReminder().getAlive())
+                () -> assertEquals(card.getReminder().getActive(), actual.getReminder().getActive())
         );
 
         card.setReminder(null);

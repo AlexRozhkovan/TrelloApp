@@ -1,3 +1,4 @@
+/*
 package spd.trello.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,4 +10,4 @@ public class ObjectMapperConf {
         return new ObjectMapper().findAndRegisterModules();
     }
 
-}
+}*/

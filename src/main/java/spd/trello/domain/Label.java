@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import spd.trello.domain.parent_classes.Resource;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,5 +13,7 @@ import javax.persistence.Table;
 @Table(name = "labels")
 @Entity
 public class Label extends Resource {
-    private String colorName;
+
+    @Column(name = "color")
+    private String color;
 }

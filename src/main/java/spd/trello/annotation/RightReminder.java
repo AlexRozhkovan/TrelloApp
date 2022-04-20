@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = RightReminderValidator.class)
 public @interface RightReminder {
 
-    String message() default "reminder not correct";
+    String message() default "reminder isn't correct";
 
     Class<?>[] groups() default {};
 

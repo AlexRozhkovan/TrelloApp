@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @PropertySource("classpath:/application.yml")
-public class StorageLocation {
+public class StorageConf {
     @Value("${location}")
     private String location;
 }

@@ -85,7 +85,7 @@ public class CardControllerTest extends AbstractControllerTest<Card> {
         Card expected = EntityBuilder.getCard(repository);
 
         Reminder reminder = new Reminder();
-        reminder.setAlive(true);
+        reminder.setActive(true);
         expected.setReminder(reminder);
 
         MvcResult result = super.update(URL, expected);

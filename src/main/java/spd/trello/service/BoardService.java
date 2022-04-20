@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Service
 public class BoardService extends ArchivedResourceService<Board, BoardRepository> {
+
     public BoardService(BoardRepository repository) {
         super(repository);
     }

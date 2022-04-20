@@ -6,7 +6,7 @@ import spd.trello.domain.CheckList;
 import spd.trello.service.CheckListService;
 
 @RestController
-@RequestMapping("/checklists")
+@RequestMapping("/check_lists")
 public class CheckListController extends AbstractController<CheckList, CheckListService> {
 
     public CheckListController(CheckListService service) {

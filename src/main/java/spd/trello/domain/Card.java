@@ -10,19 +10,21 @@ import spd.trello.domain.parent_classes.MainArchived;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "cards")
 public class Card extends MainArchived {
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "cardlist_id")
+    @Column(name = "card_list_id")
     private UUID cardListId;
 
     @ElementCollection
@@ -31,15 +33,16 @@ public class Card extends MainArchived {
             name = "card_member",
             joinColumns = @JoinColumn(name = "card_id"))
     @Column(name = "member_id")
-    @NotEmpty(message = "card must contain at least one member")
-    private List<UUID> assignedMembers = new ArrayList<>();
+    @UniqueElements(message = "Member already exist")
+    @NotEmpty(message = "Add minimum 1 member")
+    private List<UUID> members = new ArrayList<>();
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "label_card",
             joinColumns = @JoinColumn(name = "card_id"))
     @Column(name = "label_id")
-    @UniqueElements(message = "Label cannot added twice")
+    @UniqueElements(message = "Label already exist")
     private List<UUID> labels;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -48,7 +51,7 @@ public class Card extends MainArchived {
     private Reminder reminder;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "checklist_id", referencedColumnName = "id")
+    @JoinColumn(name = "check_list_id", referencedColumnName = "id")
     @JsonIgnoreProperties("card")
     private CheckList checkList;
 }

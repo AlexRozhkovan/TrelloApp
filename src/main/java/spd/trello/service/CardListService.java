@@ -10,5 +10,4 @@ public class CardListService extends ArchivedResourceService<CardList, CardListR
     public CardListService(CardListRepository repository) {
         super(repository);
     }
-
 }

@@ -14,6 +14,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "comments")
 public class Comment extends Resource {
+
+    @Column(name = "text")
     private String text;
 
     @Column(name = "card_id")

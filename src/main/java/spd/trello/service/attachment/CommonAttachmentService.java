@@ -7,7 +7,10 @@ import java.util.UUID;
 
 public interface CommonAttachmentService {
 
-    Attachment load(MultipartFile file);
+    Attachment load(UUID cardId, MultipartFile file);
 
     Attachment readById(UUID id);
+
+    void deleteById(UUID id);
+
 }

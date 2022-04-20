@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 public class MemberControllerTest extends AbstractControllerTest<Member> {
 
+
     private static String URL = "/members";
 
     @Autowired
@@ -84,7 +85,7 @@ public class MemberControllerTest extends AbstractControllerTest<Member> {
 
     @Test
     @DisplayName("failReadById")
-    public void failReadById() throws Exception {
+    public void failReadById() throws Exception{
         MvcResult result = super.readById(URL, UUID.randomUUID());
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }

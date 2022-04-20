@@ -16,7 +16,9 @@ public class CheckableItem extends Domain {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "checklist_id", referencedColumnName = "id")
     private CheckList checkList;
+
+    @Column(name = "name")
     private String name;
-    @Column(name = "checked")
-    private Boolean check = false;
+
+    private Boolean checked = false;
 }

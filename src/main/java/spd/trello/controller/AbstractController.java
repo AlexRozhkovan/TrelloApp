@@ -11,7 +11,6 @@ import spd.trello.service.CommonService;
 import javax.validation.Valid;
 import java.util.UUID;
 
-
 public class AbstractController<E extends Resource, S extends CommonService<E>>
         implements CommonController<E> {
 
@@ -24,7 +23,7 @@ public class AbstractController<E extends Resource, S extends CommonService<E>>
     @PostMapping
     @Override
     public ResponseEntity<E> create(@RequestBody @Valid E resource) {
-        resource.setCreatedBy("chekchek@gmail.com");
+        resource.setCreatedBy("email@gmail.com");
         E result = service.create(resource);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -32,7 +31,7 @@ public class AbstractController<E extends Resource, S extends CommonService<E>>
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody @Valid E resource) {
-        resource.setUpdatedBy("chekchek@gmail.com");
+        resource.setUpdatedBy("email@gmail.com");
         E result = service.update(resource);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

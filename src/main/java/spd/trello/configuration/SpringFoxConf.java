@@ -19,14 +19,13 @@ import java.util.List;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 @Configuration
-@EnableScheduling
-public class SpringFoxConfig {
+public class SpringFoxConf {
 
     private final TypeResolver resolver;
 
     private final ReminderRepository repository;
 
-    public SpringFoxConfig(TypeResolver resolver, ReminderRepository repository) {
+    public SpringFoxConf(TypeResolver resolver, ReminderRepository repository) {
         this.resolver = resolver;
         this.repository = repository;
     }
@@ -41,11 +40,4 @@ public class SpringFoxConfig {
                         newRule(resolver.resolve(Sort.class), resolver.resolve(List.class, String.class)));
     }
 
-    @Scheduled(fixedRate = 60000)
-    public void RemindMessage() {
-        List<Reminder> reminders = repository.findAllByRemindOnBetween(LocalDateTime.now().minusMinutes(1), LocalDateTime.now());
-        for (Reminder reminder : reminders) {
-            System.out.println("Reminder: " + reminder.getId() + "has been activated");
-        }
-    }
 }

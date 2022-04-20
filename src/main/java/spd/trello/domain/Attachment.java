@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,9 +19,15 @@ import javax.persistence.Table;
 public class Attachment extends Domain {
     @Column(name = "context")
     private String context;
+
     @Column(name = "name")
     private String name;
+
     @Lob
     @Column(name = "file")
     private byte[] file;
+
+    @Column(name = "card_id")
+    private UUID cardId;
+
 }
