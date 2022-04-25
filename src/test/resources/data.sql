@@ -32,7 +32,7 @@ values ('7ee817d3-9535-885d-93bd-3ad6f36c5fd8','test','2020-09-16 14:15:32.46439
 insert into labels(id, created_by, created_date, color)
 VALUES ('7ee817d3-9835-815d-93bd-2ad6f33c5fd8','test','2020-09-16 14:15:32.464391','test label');
 
-insert into space_member(space_id, member_id) VALUES ('7ee897d3-9065-471d-53bd-7ad5f30c5bd4', '7ee897d3-9065-421d-93bd-7ad5f30c5bd4');
+insert into workspace_member(workspace_id, member_id) VALUES ('7ee897d3-9065-471d-53bd-7ad5f30c5bd4', '7ee897d3-9065-421d-93bd-7ad5f30c5bd4');
 
 insert into board_member(board_id, member_id) VALUES ('7ee897d3-9065-821d-93bd-4ad6f30c5bd4', '7ee897d3-9065-421d-93bd-7ad5f30c5bd4');
 
