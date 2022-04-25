@@ -3,7 +3,7 @@ package spd.trello.controller;
 import spd.trello.TrelloApplication;
 import spd.trello.domain.Workspace;
 import spd.trello.exception.ErrorResponse;
-import spd.trello.repository_jpa.WorkspaceRepository;
+import spd.trello.repository.WorkspaceRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

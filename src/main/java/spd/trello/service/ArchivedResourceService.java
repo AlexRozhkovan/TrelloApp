@@ -1,7 +1,7 @@
 package spd.trello.service;
 
 import spd.trello.domain.parent_classes.ArchivedResource;
-import spd.trello.repository_jpa.CommonRepository;
+import spd.trello.repository.CommonRepository;
 
 import java.time.LocalDateTime;
 

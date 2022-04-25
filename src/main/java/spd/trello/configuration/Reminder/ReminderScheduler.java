@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import spd.trello.domain.Reminder;
-import spd.trello.repository_jpa.ReminderRepository;
+import spd.trello.repository.ReminderRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;

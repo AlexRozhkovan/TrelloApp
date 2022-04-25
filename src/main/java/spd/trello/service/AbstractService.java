@@ -2,7 +2,7 @@ package spd.trello.service;
 
 import spd.trello.domain.parent_classes.Resource;
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository_jpa.CommonRepository;
+import spd.trello.repository.CommonRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

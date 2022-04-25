@@ -2,11 +2,10 @@ package spd.trello.controller;
 
 import spd.trello.domain.*;
 import spd.trello.domain.enums.Role;
-import spd.trello.repository_jpa.*;
+import spd.trello.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class EntityBuilder {

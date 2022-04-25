@@ -2,7 +2,7 @@ package spd.trello.domain;
 
 import spd.trello.domain.enums.BoardVisibility;
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository_jpa.BoardRepository;
+import spd.trello.repository.BoardRepository;
 import spd.trello.service.BoardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

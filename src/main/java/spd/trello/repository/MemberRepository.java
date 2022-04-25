@@ -1,4 +1,4 @@
-package spd.trello.repository_jpa;
+package spd.trello.repository;
 
 import org.springframework.stereotype.Repository;
 import spd.trello.domain.Member;

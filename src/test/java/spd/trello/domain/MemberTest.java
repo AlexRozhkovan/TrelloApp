@@ -2,7 +2,7 @@ package spd.trello.domain;
 
 import spd.trello.domain.enums.Role;
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository_jpa.MemberRepository;
+import spd.trello.repository.MemberRepository;
 import spd.trello.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

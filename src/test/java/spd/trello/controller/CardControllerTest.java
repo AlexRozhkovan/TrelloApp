@@ -5,7 +5,7 @@ import spd.trello.domain.Reminder;
 import spd.trello.domain.Card;
 import spd.trello.domain.CheckList;
 import spd.trello.exception.ErrorResponse;
-import spd.trello.repository_jpa.CardRepository;
+import spd.trello.repository.CardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

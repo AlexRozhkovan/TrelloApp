@@ -2,7 +2,7 @@ package spd.trello.controller;
 
 import spd.trello.TrelloApplication;
 import spd.trello.domain.CardList;
-import spd.trello.repository_jpa.CardListRepository;
+import spd.trello.repository.CardListRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,7 @@
 package spd.trello.domain;
 
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository_jpa.CardListRepository;
+import spd.trello.repository.CardListRepository;
 import spd.trello.service.CardListService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

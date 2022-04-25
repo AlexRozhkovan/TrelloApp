@@ -1,7 +1,7 @@
 package spd.trello.service;
 
 import spd.trello.domain.Workspace;
-import spd.trello.repository_jpa.WorkspaceRepository;
+import spd.trello.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
 
 @Service

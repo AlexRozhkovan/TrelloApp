@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import spd.trello.configuration.AttachmentStorage;
 import spd.trello.domain.Attachment;
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository_jpa.AttachmentRepository;
+import spd.trello.repository.AttachmentRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;

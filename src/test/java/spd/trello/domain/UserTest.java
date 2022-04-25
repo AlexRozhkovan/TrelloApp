@@ -2,7 +2,7 @@ package spd.trello.domain;
 
 
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository_jpa.UserRepository;
+import spd.trello.repository.UserRepository;
 import spd.trello.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

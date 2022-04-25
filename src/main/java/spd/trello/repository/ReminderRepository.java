@@ -1,4 +1,4 @@
-package spd.trello.repository_jpa;
+package spd.trello.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import spd.trello.domain.Reminder;

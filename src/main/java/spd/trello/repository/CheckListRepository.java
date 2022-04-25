@@ -1,4 +1,4 @@
-package spd.trello.repository_jpa;
+package spd.trello.repository;
 
 import spd.trello.domain.CheckList;
 import org.springframework.stereotype.Repository;

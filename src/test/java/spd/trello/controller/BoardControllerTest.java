@@ -4,7 +4,7 @@ import spd.trello.TrelloApplication;
 import spd.trello.domain.enums.BoardVisibility;
 import spd.trello.domain.Board;
 import spd.trello.exception.ErrorResponse;
-import spd.trello.repository_jpa.BoardRepository;
+import spd.trello.repository.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -3,7 +3,7 @@ package spd.trello.service.attachment_helper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.repository_jpa.AttachmentRepository;
+import spd.trello.repository.AttachmentRepository;
 
 import java.io.IOException;
 import java.util.UUID;

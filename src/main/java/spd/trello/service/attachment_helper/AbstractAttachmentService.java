@@ -2,7 +2,7 @@ package spd.trello.service.attachment_helper;
 
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.repository_jpa.AttachmentRepository;
+import spd.trello.repository.AttachmentRepository;
 
 import java.io.FileNotFoundException;
 import java.util.Optional;

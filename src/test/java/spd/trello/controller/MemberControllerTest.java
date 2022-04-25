@@ -3,7 +3,7 @@ package spd.trello.controller;
 import spd.trello.TrelloApplication;
 import spd.trello.domain.enums.Role;
 import spd.trello.domain.Member;
-import spd.trello.repository_jpa.MemberRepository;
+import spd.trello.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
