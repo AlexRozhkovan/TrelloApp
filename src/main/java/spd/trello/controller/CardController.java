@@ -8,7 +8,6 @@ import spd.trello.service.CardService;
 @RestController
 @RequestMapping("/cards")
 public class CardController extends AbstractController<Card, CardService> {
-
     public CardController(CardService service) {
         super(service);
     }

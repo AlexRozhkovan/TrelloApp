@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.UniqueElements;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
+import spd.trello.domain.enums.WorkspaceVisibility;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;
@@ -27,14 +27,13 @@ public class Workspace extends Resource {
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
-            name = "space_member",
-            joinColumns = @JoinColumn(name = "space_id"))
+            name = "workspace_member",
+            joinColumns = @JoinColumn(name = "workspace_id"))
     @Column(name = "member_id")
-    @UniqueElements(message = "member already exist")
-    @NotEmpty(message = "Add minimum 1 member")
+    @NotEmpty(message = "You can't create board without members")
+    @UniqueElements(message = "Member is exist")
     private List<UUID> members = new ArrayList<>();
 
-    @Column(name = "visibility")
     @Enumerated(EnumType.STRING)
     private WorkspaceVisibility visibility = WorkspaceVisibility.PUBLIC;
 

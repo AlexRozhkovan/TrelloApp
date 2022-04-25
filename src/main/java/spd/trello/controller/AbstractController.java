@@ -11,8 +11,9 @@ import spd.trello.service.CommonService;
 import javax.validation.Valid;
 import java.util.UUID;
 
+
 public class AbstractController<E extends Resource, S extends CommonService<E>>
-        implements CommonController<E> {
+        implements IController<E> {
 
     S service;
 
@@ -23,7 +24,7 @@ public class AbstractController<E extends Resource, S extends CommonService<E>>
     @PostMapping
     @Override
     public ResponseEntity<E> create(@RequestBody @Valid E resource) {
-        resource.setCreatedBy("email@gmail.com");
+        resource.setCreatedBy("myEmail@gmail.com");
         E result = service.create(resource);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -31,9 +32,15 @@ public class AbstractController<E extends Resource, S extends CommonService<E>>
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody @Valid E resource) {
-        resource.setUpdatedBy("email@gmail.com");
+        resource.setUpdatedBy("myEmail@gmail.com");
         E result = service.update(resource);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping
+    @Override
+    public Page<E> readAll(Pageable pageable) {
+        return service.readAll(pageable);
     }
 
     @GetMapping("/{id}")
@@ -48,11 +55,5 @@ public class AbstractController<E extends Resource, S extends CommonService<E>>
     public ResponseEntity<E> delete(@PathVariable UUID id) {
         E result = service.delete(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @GetMapping
-    @Override
-    public Page<E> readAll(Pageable pageable) {
-        return service.readAll(pageable);
     }
 }

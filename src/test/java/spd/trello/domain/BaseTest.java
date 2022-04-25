@@ -1,13 +1,13 @@
 package spd.trello.domain;
 
+import spd.trello.domain.enums.BoardVisibility;
+import spd.trello.domain.enums.Role;
+import spd.trello.domain.enums.WorkspaceVisibility;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.domain.enumerations.Role;
-import spd.trello.domain.enumerations.WorkspaceVisibility;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class BaseTest {
 
     public static User user;
     public static Member member;
-    public static Workspace workspace;
+    public static Workspace workSpace;
     public static Board board;
     public static CardList cardList;
     public static Card card;
@@ -35,18 +35,18 @@ public class BaseTest {
         member.setId(UUID.fromString("7ee897d3-9065-421d-93bd-7ad7f30c4bd9"));
         member.setUser(user);
         member.setRole(Role.ADMIN);
-        workspace = new Workspace();
+        workSpace = new Workspace();
 
-        workspace.setName("test");
-        workspace.setDescription("test name");
-        workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        workSpace.setName("test");
+        workSpace.setDescription("test name");
+        workSpace.setVisibility(WorkspaceVisibility.PUBLIC);
 
         board = new Board();
         board.setId(UUID.fromString("7ee897d3-9045-521d-93bd-7ad5f30c3bd9"));
         board.setCreatedBy("test");
         board.setName("test board");
         board.setDescription("test desc");
-        board.setWorkspaceId(workspace.getId());
+        board.setWorkspaceId(workSpace.getId());
         board.setVisibility(BoardVisibility.PUBLIC);
         board.setArchived(false);
 

@@ -9,6 +9,6 @@ import java.util.UUID;
 @Data
 @MappedSuperclass
 public class Domain {
-    @Id
-    protected UUID id = UUID.randomUUID();
+   @Id
+   protected UUID id = UUID.randomUUID();
 }

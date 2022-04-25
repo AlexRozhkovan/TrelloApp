@@ -1,12 +1,11 @@
 package spd.trello.service;
 
-import spd.trello.domain.parent_classes.MainArchived;
-import spd.trello.exception.NotFoundException;
-import spd.trello.repository.CommonRepository;
+import spd.trello.domain.parent_classes.ArchivedResource;
+import spd.trello.repository_jpa.CommonRepository;
 
 import java.time.LocalDateTime;
 
-public class ArchivedResourceService<E extends MainArchived, R extends CommonRepository<E>>
+public class ArchivedResourceService<E extends ArchivedResource, R extends CommonRepository<E>>
         extends AbstractService<E, R> {
 
     public ArchivedResourceService(R repository) {
@@ -22,7 +21,7 @@ public class ArchivedResourceService<E extends MainArchived, R extends CommonRep
 
     private E checkArchivedResource(E entity, E foundEntity) {
         if (foundEntity.getArchived() && entity.getArchived())
-            throw new NotFoundException("Archived " + entity.getClass().getSimpleName() + " can't be updated");
+            throw new IllegalArgumentException(entity.getClass().getSimpleName() + " can't be updated because it archived");
         else if ((!foundEntity.getArchived() && entity.getArchived())
                 || (foundEntity.getArchived() && !entity.getArchived())) {
             foundEntity.setArchived(entity.getArchived());

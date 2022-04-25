@@ -1,10 +1,10 @@
 package spd.trello.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import spd.trello.domain.parent_classes.Resource;
 import spd.trello.exception.NotFoundException;
-import spd.trello.repository.CommonRepository;
+import spd.trello.repository_jpa.CommonRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,6 +31,11 @@ public abstract class AbstractService<E extends Resource, R extends CommonReposi
     }
 
     @Override
+    public Page<E> readAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
     public E readById(UUID id) {
         return repository.findById(id).orElseThrow(NotFoundException::new);
     }
@@ -40,10 +45,5 @@ public abstract class AbstractService<E extends Resource, R extends CommonReposi
         E result = readById(id);
         repository.deleteById(id);
         return result;
-    }
-
-    @Override
-    public Page<E> readAll(Pageable pageable) {
-        return repository.findAll(pageable);
     }
 }

@@ -1,14 +1,16 @@
 package spd.trello.controller;
 
 import spd.trello.domain.*;
-import spd.trello.domain.enumerations.Role;
-import spd.trello.repository.*;
+import spd.trello.domain.enums.Role;
+import spd.trello.repository_jpa.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class EntityBuilder {
+
 
     static User buildUser() {
         User user = new User();
@@ -39,18 +41,18 @@ public class EntityBuilder {
         return repository.save(buildMember());
     }
 
-    static Workspace buildWorkspace() {
-        Workspace workspace = new Workspace();
-        workspace.setName("test");
-        workspace.setDescription("test desc");
-        workspace.setMembers(List.of(UUID.fromString("7ee897d3-9065-471d-53bd-7ad5f30c5bd4")));
-        workspace.setCreatedDate(LocalDateTime.now());
-        workspace.setCreatedBy("test");
-        return workspace;
+    static Workspace buildWorkSpace() {
+        Workspace workSpace = new Workspace();
+        workSpace.setName("test");
+        workSpace.setDescription("test desc");
+        workSpace.setMembers(List.of(UUID.fromString("7ee897d3-9065-421d-93bd-7ad5f30c5bd4")));
+        workSpace.setCreatedDate(LocalDateTime.now());
+        workSpace.setCreatedBy("test");
+        return workSpace;
     }
 
-    static Workspace getWorkspace(WorkspaceRepository repository) {
-        return repository.save(buildWorkspace());
+    static Workspace getWorkSpace(WorkspaceRepository repository) {
+        return repository.save(buildWorkSpace());
     }
 
     static Board buildBoard() {

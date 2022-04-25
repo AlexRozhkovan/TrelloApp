@@ -1,5 +1,8 @@
 package spd.trello.controller;
 
+import spd.trello.TrelloApplication;
+import spd.trello.domain.CardList;
+import spd.trello.repository_jpa.CardListRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,9 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.TrelloApplication;
-import spd.trello.domain.CardList;
-import spd.trello.repository.CardListRepository;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 public class CardListControllerTest extends AbstractControllerTest<CardList> {
 
-    private static String URL = "/cardlists";
+    private static String URL = "/card_lists";
 
     @Autowired
     CardListRepository repository;

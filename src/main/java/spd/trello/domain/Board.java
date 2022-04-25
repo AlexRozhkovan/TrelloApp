@@ -5,21 +5,24 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.UniqueElements;
-import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.domain.parent_classes.MainArchived;
+import spd.trello.domain.enums.BoardVisibility;
+import spd.trello.domain.parent_classes.ArchivedResource;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "boards")
-public class Board extends MainArchived {
+public class Board extends ArchivedResource {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
 
@@ -32,12 +35,10 @@ public class Board extends MainArchived {
             name = "board_member",
             joinColumns = @JoinColumn(name = "board_id"))
     @Column(name = "member_id")
-    @UniqueElements(message = "member already exist")
-    @NotEmpty(message = "Add minimum 1 member")
+    @UniqueElements(message = "Member is exist")
+    @NotEmpty(message = "You can't create board without members")
     private List<UUID> members = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "visibility")
     private BoardVisibility visibility = BoardVisibility.PUBLIC;
-
 }

@@ -1,5 +1,10 @@
 package spd.trello.controller;
 
+import spd.trello.TrelloApplication;
+import spd.trello.domain.enums.BoardVisibility;
+import spd.trello.domain.Board;
+import spd.trello.exception.ErrorResponse;
+import spd.trello.repository_jpa.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,11 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.TrelloApplication;
-import spd.trello.domain.Board;
-import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.exception.ErrorResponse;
-import spd.trello.repository.BoardRepository;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -29,17 +29,6 @@ public class BoardControllerTest extends AbstractControllerTest<Board> {
 
     @Autowired
     private BoardRepository repository;
-
-    @Test
-    @DisplayName("readAll")
-    public void successReadAll() throws Exception {
-        MvcResult result = super.getAll(URL);
-
-        assertAll(
-                () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus())
-        );
-    }
-
 
     @Test
     @DisplayName("create")
@@ -60,7 +49,7 @@ public class BoardControllerTest extends AbstractControllerTest<Board> {
     }
 
     @Test
-    @DisplayName("createWithoutMembers")
+    @DisplayName("FailCreate")
     public void failCreate() throws Exception {
         Board unexpected = EntityBuilder.buildBoard();
         unexpected.setMembers(new ArrayList<>());
@@ -124,6 +113,23 @@ public class BoardControllerTest extends AbstractControllerTest<Board> {
     }
 
     @Test
+    @DisplayName("failUpdate")
+    public void failUpdate() throws Exception {
+        MvcResult result = super.readById(URL, UUID.randomUUID());
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+    }
+
+    @Test
+    @DisplayName("readAll")
+    public void successReadAll() throws Exception {
+        MvcResult result = super.getAll(URL);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus())
+        );
+    }
+
+    @Test
     @DisplayName("readById")
     public void successReadById() throws Exception {
         Board expected = new Board();
@@ -164,13 +170,6 @@ public class BoardControllerTest extends AbstractControllerTest<Board> {
     @DisplayName("failDelete")
     public void failDelete() throws Exception {
         MvcResult result = super.delete(URL, UUID.randomUUID());
-        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
-    }
-
-    @Test
-    @DisplayName("failUpdate")
-    public void failUpdate() throws Exception {
-        MvcResult result = super.readById(URL, UUID.randomUUID());
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 }

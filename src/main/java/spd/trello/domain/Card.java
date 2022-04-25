@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.UniqueElements;
-import spd.trello.domain.parent_classes.MainArchived;
+import spd.trello.domain.parent_classes.ArchivedResource;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -16,7 +16,7 @@ import java.util.*;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "cards")
-public class Card extends MainArchived {
+public class Card extends ArchivedResource {
 
     @Column(name = "name")
     private String name;
@@ -24,7 +24,7 @@ public class Card extends MainArchived {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "card_list_id")
+    @Column(name = "cardlist_id")
     private UUID cardListId;
 
     @ElementCollection
@@ -33,8 +33,8 @@ public class Card extends MainArchived {
             name = "card_member",
             joinColumns = @JoinColumn(name = "card_id"))
     @Column(name = "member_id")
-    @UniqueElements(message = "Member already exist")
-    @NotEmpty(message = "Add minimum 1 member")
+    @UniqueElements(message = "Member is exist")
+    @NotEmpty(message = "You can't create card without members")
     private List<UUID> members = new ArrayList<>();
 
     @ElementCollection
@@ -42,7 +42,7 @@ public class Card extends MainArchived {
     @JoinTable(name = "label_card",
             joinColumns = @JoinColumn(name = "card_id"))
     @Column(name = "label_id")
-    @UniqueElements(message = "Label already exist")
+    @UniqueElements(message = "Label is exist")
     private List<UUID> labels;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -51,7 +51,7 @@ public class Card extends MainArchived {
     private Reminder reminder;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "check_list_id", referencedColumnName = "id")
+    @JoinColumn(name = "checklist_id", referencedColumnName = "id")
     @JsonIgnoreProperties("card")
     private CheckList checkList;
 }

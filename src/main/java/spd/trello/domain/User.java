@@ -7,8 +7,8 @@ import spd.trello.domain.parent_classes.Resource;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -17,14 +17,14 @@ import javax.validation.constraints.NotBlank;
 public class User extends Resource {
 
     @Column(name = "first_name")
-    @NotBlank(message = "Firstname shouldn`t be blank")
+    @NotBlank(message = "Firstname can't be blank")
     private String firstName;
 
     @Column(name = "last_name")
-    @NotBlank(message = "Lastname shouldn`t be blank")
+    @NotBlank(message = "Lastname can't not be blank")
     private String lastName;
 
     @Column(name = "email")
-    @Email(message = "Must be a valid email address")
+    @Pattern(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}", message = "Invalid email address")
     private String email;
 }

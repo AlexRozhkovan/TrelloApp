@@ -1,33 +1,27 @@
 package spd.trello.domain;
 
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import spd.trello.domain.parent_classes.Domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
-@Getter
-@Setter
-@Generated
-@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "attachments")
+@Entity
 public class Attachment extends Domain {
-    @Column(name = "context")
-    private String context;
 
     @Column(name = "name")
     private String name;
 
+    @Column(name = "context")
+    private String context;
+
     @Lob
-    @Column(name = "file")
     private byte[] file;
 
     @Column(name = "card_id")
     private UUID cardId;
-
 }

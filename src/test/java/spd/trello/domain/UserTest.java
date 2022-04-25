@@ -1,14 +1,15 @@
 package spd.trello.domain;
 
+
+import spd.trello.exception.NotFoundException;
+import spd.trello.repository_jpa.UserRepository;
+import spd.trello.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import spd.trello.exception.NotFoundException;
-import spd.trello.repository.UserRepository;
-import spd.trello.service.UserService;
 
 import java.util.List;
 import java.util.Optional;

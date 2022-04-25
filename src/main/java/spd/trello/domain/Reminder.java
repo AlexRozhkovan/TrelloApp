@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import spd.trello.annotation.RightReminder;
+import spd.trello.configuration.Reminder.IReminder;
 import spd.trello.domain.parent_classes.Domain;
 
 import javax.persistence.Column;
@@ -21,26 +21,31 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "reminders")
 @Entity
-@RightReminder
+@IReminder
 public class Reminder extends Domain {
 
     @Column(name = "starts")
+    @NotNull(message = "Field \"start\" can't be null")
+    @FutureOrPresent
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @NotNull(message = "\"start\" can't be null")
-    @FutureOrPresent
     private LocalDateTime start;
 
     @Column(name = "ends")
+    @NotNull(message = "Field \"end\" can't be null")
+    @Future
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @Future
     private LocalDateTime end;
 
+    @Column(name = "remind_on")
+    @NotNull(message = "Field \"remind on\" can't be null")
+    @Future
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @Future
     private LocalDateTime remindOn;
 
-    private Boolean active;
+    private Boolean alive;
+
 }
+

@@ -1,5 +1,9 @@
 package spd.trello.controller;
 
+import spd.trello.TrelloApplication;
+import spd.trello.domain.enums.Role;
+import spd.trello.domain.Member;
+import spd.trello.repository_jpa.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,10 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.TrelloApplication;
-import spd.trello.domain.Member;
-import spd.trello.domain.enumerations.Role;
-import spd.trello.repository.MemberRepository;
 
 import java.util.UUID;
 
@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = TrelloApplication.class)
 @AutoConfigureMockMvc
 public class MemberControllerTest extends AbstractControllerTest<Member> {
-
 
     private static String URL = "/members";
 

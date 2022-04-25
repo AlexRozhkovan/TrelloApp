@@ -1,15 +1,15 @@
 package spd.trello.domain;
 
+import spd.trello.domain.enums.Role;
+import spd.trello.exception.NotFoundException;
+import spd.trello.repository_jpa.MemberRepository;
+import spd.trello.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import spd.trello.domain.enumerations.Role;
-import spd.trello.exception.NotFoundException;
-import spd.trello.repository.MemberRepository;
-import spd.trello.service.MemberService;
 
 import java.util.List;
 import java.util.Optional;

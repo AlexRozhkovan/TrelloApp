@@ -1,15 +1,15 @@
 package spd.trello.domain;
 
+import spd.trello.domain.enums.BoardVisibility;
+import spd.trello.exception.NotFoundException;
+import spd.trello.repository_jpa.BoardRepository;
+import spd.trello.service.BoardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import spd.trello.domain.enumerations.BoardVisibility;
-import spd.trello.exception.NotFoundException;
-import spd.trello.repository.BoardRepository;
-import spd.trello.service.BoardService;
 
 import java.util.List;
 import java.util.Optional;
@@ -111,7 +111,7 @@ public class BoardTest extends BaseTest {
         when(repository.findById(any())).thenReturn(Optional.ofNullable(board));
         doNothing().when(repository).deleteById(any());
 
-        workspace.setId(UUID.randomUUID());
+        workSpace.setId(UUID.randomUUID());
         Board expected = service.create(board);
         Board actual = service.delete(expected.getId());
 

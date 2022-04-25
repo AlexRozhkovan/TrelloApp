@@ -28,16 +28,6 @@ public class GlobalExceptionHandler<T extends Domain> {
         return new ResponseEntity(responseBody, HttpStatus.NOT_FOUND);
     }
 
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseBody
-    protected ResponseEntity<Object> onConstraintValidationException(
-            ConstraintViolationException e) {
-        List<String> details = e.getConstraintViolations().stream().map(er -> er.getMessage()).collect(Collectors.toList());
-        ErrorResponse error = new ErrorResponse("Validation error", details);
-        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
@@ -48,6 +38,15 @@ public class GlobalExceptionHandler<T extends Domain> {
                 .map(fieldError -> fieldError.getDefaultMessage())
                 .collect(Collectors.toList());
         ErrorResponse error = new ErrorResponse(name + " not valid", details);
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    protected ResponseEntity<Object> onConstraintValidationException(
+            ConstraintViolationException e) {
+        List<String> details = e.getConstraintViolations().stream().map(er -> er.getMessage()).collect(Collectors.toList());
+        ErrorResponse error = new ErrorResponse("Validation error", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 }

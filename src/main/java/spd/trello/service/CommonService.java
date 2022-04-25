@@ -11,9 +11,9 @@ public interface CommonService<E extends Resource> {
 
     E update(E entity);
 
+    Page<E> readAll(Pageable pageable);
+
     E readById(UUID id);
 
     E delete(UUID id);
-
-    Page<E> readAll(Pageable pageable);
 }

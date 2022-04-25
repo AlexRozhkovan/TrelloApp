@@ -1,14 +1,14 @@
 package spd.trello.domain;
 
+import spd.trello.exception.NotFoundException;
+import spd.trello.repository_jpa.CardListRepository;
+import spd.trello.service.CardListService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import spd.trello.exception.NotFoundException;
-import spd.trello.repository.CardListRepository;
-import spd.trello.service.CardListService;
 
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +89,7 @@ public class CardListTest extends BaseTest {
         when(repository.findById(any())).thenReturn(Optional.ofNullable(cardList));
         doNothing().when(repository).deleteById(any());
 
-        workspace.setId(UUID.randomUUID());
+        workSpace.setId(UUID.randomUUID());
         CardList expected = service.create(cardList);
         CardList actual = service.delete(expected.getId());
 

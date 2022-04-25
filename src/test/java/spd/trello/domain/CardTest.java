@@ -1,14 +1,14 @@
 package spd.trello.domain;
 
+import spd.trello.exception.NotFoundException;
+import spd.trello.repository_jpa.CardRepository;
+import spd.trello.service.CardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import spd.trello.exception.NotFoundException;
-import spd.trello.repository.CardRepository;
-import spd.trello.service.CardService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,7 +75,7 @@ public class CardTest extends BaseTest {
         when(repository.save(card)).thenReturn(card);
 
         Reminder reminder = new Reminder();
-        reminder.setActive(true);
+        reminder.setAlive(true);
         reminder.setStart(LocalDateTime.now());
         card.setReminder(reminder);
         Card actual = service.update(card);
@@ -84,7 +84,7 @@ public class CardTest extends BaseTest {
                 () -> assertNotNull(actual.getUpdatedDate()),
                 () -> assertNotNull(actual.getReminder()),
                 () -> assertNotNull(actual.getReminder().getStart()),
-                () -> assertEquals(card.getReminder().getActive(), actual.getReminder().getActive())
+                () -> assertEquals(card.getReminder().getAlive(), actual.getReminder().getAlive())
         );
 
         card.setReminder(null);
@@ -118,7 +118,7 @@ public class CardTest extends BaseTest {
         when(repository.findById(any())).thenReturn(Optional.ofNullable(card));
         doNothing().when(repository).deleteById(any());
 
-        workspace.setId(UUID.randomUUID());
+        workSpace.setId(UUID.randomUUID());
         Card expected = service.create(card);
         Card actual = service.delete(expected.getId());
 

@@ -19,22 +19,20 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Resource extends Domain {
 
-    @Column(name = "created_by",
-            updatable = false)
+    @Column(name = "created_by", updatable = false)
     private String createdBy;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @Column(name = "created_date",
-            updatable = false)
     @CreatedDate
+    @Column(name = "created_date", updatable = false)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdDate;
 
-    @Column(name = "updated_date")
     @LastModifiedDate
+    @Column(name = "updated_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedDate;

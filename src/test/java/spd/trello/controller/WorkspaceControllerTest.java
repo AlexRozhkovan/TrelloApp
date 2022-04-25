@@ -1,5 +1,9 @@
 package spd.trello.controller;
 
+import spd.trello.TrelloApplication;
+import spd.trello.domain.Workspace;
+import spd.trello.exception.ErrorResponse;
+import spd.trello.repository_jpa.WorkspaceRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,10 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.TrelloApplication;
-import spd.trello.domain.Workspace;
-import spd.trello.exception.ErrorResponse;
-import spd.trello.repository.WorkspaceRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,11 +41,10 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
         );
     }
 
-
     @Test
     @DisplayName("create")
     public void successCreate() throws Exception {
-        Workspace expected = EntityBuilder.buildWorkspace();
+        Workspace expected = EntityBuilder.buildWorkSpace();
         MvcResult result = super.create(URL, expected);
         Workspace actual = mapFromJson(result.getResponse().getContentAsString(), Workspace.class);
 
@@ -62,7 +61,7 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
     @Test
     @DisplayName("createWithoutMembers")
     public void failCreate() throws Exception {
-        Workspace unexpected = EntityBuilder.buildWorkspace();
+        Workspace unexpected = EntityBuilder.buildWorkSpace();
         unexpected.setMembers(new ArrayList<>());
 
         MvcResult result = super.create(URL, unexpected);
@@ -78,7 +77,7 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
     @Test
     @DisplayName("update")
     public void successUpdate() throws Exception {
-        Workspace expected = EntityBuilder.getWorkspace(repository);
+        Workspace expected = EntityBuilder.getWorkSpace(repository);
         expected.setName("test2");
         expected.setDescription("test2");
 
@@ -124,7 +123,7 @@ public class WorkspaceControllerTest extends AbstractControllerTest<Workspace> {
     @Test
     @DisplayName("delete")
     public void successDelete() throws Exception {
-        Workspace expected = EntityBuilder.getWorkspace(repository);
+        Workspace expected = EntityBuilder.getWorkSpace(repository);
 
         MvcResult result = super.delete(URL, expected.getId());
         Workspace actual = mapFromJson(result.getResponse().getContentAsString(), Workspace.class);

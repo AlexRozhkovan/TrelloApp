@@ -12,13 +12,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "items")
 public class CheckableItem extends Domain {
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "checklist_id", referencedColumnName = "id")
-    private CheckList checkList;
 
     @Column(name = "name")
     private String name;
 
+    @Column(name = "checked")
     private Boolean checked = false;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "checklist_id", referencedColumnName = "id")
+    private CheckList checkList;
 }

@@ -9,7 +9,6 @@ import spd.trello.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController extends AbstractController<User, UserService> {
-
     public UserController(UserService service) {
         super(service);
     }

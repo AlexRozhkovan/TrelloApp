@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "checklists")
+@Table(name = "check_lists")
 public class CheckList extends Resource {
 
     @Column(name = "name")

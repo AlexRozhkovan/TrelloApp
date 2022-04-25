@@ -3,21 +3,21 @@ package spd.trello.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import spd.trello.domain.parent_classes.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import spd.trello.domain.parent_classes.Resource;
 
 import java.io.UnsupportedEncodingException;
-
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
 public class AbstractControllerTest<E extends Resource> {
+
 
     @Autowired
     protected MockMvc mvc;

@@ -1,8 +1,8 @@
 package spd.trello.domain;
 
+import spd.trello.domain.enums.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import spd.trello.domain.enumerations.Role;
 import spd.trello.domain.parent_classes.Resource;
 
 import javax.persistence.*;

@@ -1,5 +1,8 @@
 package spd.trello.controller;
 
+import spd.trello.TrelloApplication;
+import spd.trello.domain.User;
+import spd.trello.repository_jpa.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,9 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.TrelloApplication;
-import spd.trello.domain.User;
-import spd.trello.repository.UserRepository;
 
 import java.util.UUID;
 
@@ -141,3 +141,4 @@ public class UserControllerTest extends AbstractControllerTest<User> {
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 }
+
